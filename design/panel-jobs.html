@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>日常工作台 · 第 5 画板：任务与自动化</title>
+<!--
+  对应 DESIGN.md §9.4 / §9.5。与 panel-mockup.html 使用同一套宿主 token 名。
+  元素 → token 映射（关键项）：
+    页面底        --dsw-alias-bg-base
+    侧栏          --dsw-specific-sidebar-fill
+    卡片          --dsw-alias-bg-layer-1 / border-l1
+    选中行        --dsw-alias-interactive-bg-hover
+    主按钮        --dsw-alias-button-primary-fill / label-primary-foreground
+    成功/警告/失败 --dsw-alias-state-success-primary / state-warn-primary / state-error-primary
+    链接          --dsw-alias-link
+    diff 增删     --dsw-alias-file-diff-added-bg / deleted-bg
+    圆角          --dsw-radius-sm(8) / md(12) / lg(16)
+    字体          12(Caption) 13(body) 14(Sub) 20(title)
+-->
+<style>
+:root{
+  color-scheme:dark;
+  --bg:var(--dsw-alias-bg-base,#151517); --l1:var(--dsw-alias-bg-layer-1,#232324);
+  --l2:var(--dsw-alias-bg-layer-2,#2c2c2e); --l3:var(--dsw-alias-bg-layer-3,#353638);
+  --b1:var(--dsw-alias-border-l1,#ffffff0f); --b2:var(--dsw-alias-border-l2,#ffffff1f); --b3:var(--dsw-alias-border-l3,#ffffff29);
+  --fg:var(--dsw-alias-label-primary,#f9fafb); --fg2:var(--dsw-alias-label-secondary,#cfd3d6);
+  --fg3:var(--dsw-alias-label-tertiary,#adb2b8); --cap:var(--dsw-alias-label-caption,#81858c);
+  --hov:var(--dsw-alias-interactive-bg-hover,#ffffff14); --act:var(--dsw-alias-interactive-bg-active,#ffffff24);
+  --brand:var(--dsw-alias-state-business-primary,#7aaaff); --link:var(--dsw-alias-link,#7aaaff);
+  --btn:var(--dsw-alias-button-primary-fill,#f9fafb); --btnfg:var(--dsw-alias-label-primary-foreground,#0f1115);
+  --ok:var(--dsw-alias-state-success-primary,#22c55e); --okbg:#22c55e1f;
+  --warn:var(--dsw-alias-state-warn-primary,#f59e0b); --warnbg:#f59e0b1f;
+  --err:var(--dsw-alias-state-error-primary,#f25a5a); --errbg:#f25a5a1f;
+  --idle:var(--dsw-alias-state-idle-primary,#545557);
+  --side:var(--dsw-specific-sidebar-fill,#151517);
+  --r-s:var(--dsw-radius-sm,8px); --r-m:var(--dsw-radius-md,12px); --r-l:var(--dsw-radius-lg,16px);
+  --ff:var(--dsw-font-family,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif);
+  --fm:ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+html[data-theme=light]{
+  color-scheme:light;
+  --bg:#ffffff; --l1:#ffffff; --l2:#f9fafb; --l3:#f1f3f5;
+  --b1:#0000000a; --b2:#0000001a; --b3:#0000001f;
+  --fg:#0f1115; --fg2:#61666b; --fg3:#81858c; --cap:#adb2b8;
+  --hov:#2631480f; --act:#2631481a; --brand:#4176e6; --link:#4176e6;
+  --btn:#0f1115; --btnfg:#ffffff; --ok:#16a34a; --okbg:#e6faed; --warn:#dd8629; --warnbg:#fef5e7; --err:#ec1313; --errbg:#feecec; --idle:#d4d4d4; --side:#f9fafb;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#0b0b0c;color:var(--fg);font-family:var(--ff);font-size:13px;line-height:20px}
+.sheet{width:1440px;margin:24px auto 40px}
+.label{display:flex;justify-content:space-between;align-items:center;color:#8b8b90;font-size:12px;margin:0 0 8px}
+.frame{width:1440px;height:900px;background:var(--bg);border:1px solid var(--b2);border-radius:var(--r-l);overflow:hidden;display:flex}
+.rail{width:56px;flex:none;background:var(--side);border-right:1px solid var(--b1);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:14px}
+.rail .dot{width:26px;height:26px;border-radius:8px;background:var(--l2);border:1px solid var(--b1)}
+.rail .dot.on{background:var(--brand);border-color:transparent}
+.badge{position:absolute;margin:-8px 0 0 14px;min-width:14px;height:14px;padding:0 4px;border-radius:7px;background:var(--err);color:#fff;font-size:9px;line-height:14px;text-align:center}
+.nav{width:220px;flex:none;border-right:1px solid var(--b1);padding:14px 10px;display:flex;flex-direction:column;gap:2px}
+.nav h1{font-size:14px;font-weight:600;margin:2px 8px 12px}
+.nav a{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:var(--r-s);color:var(--fg2);text-decoration:none}
+.nav a.on{background:var(--act);color:var(--fg);font-weight:600}
+.nav a .cnt{margin-left:auto;font-size:11px;color:var(--cap)}
+.nav a.on .cnt{color:var(--fg2)}
+.nav .grp{margin:12px 8px 4px;font-size:11px;color:var(--cap);letter-spacing:.04em}
+.nav .foot{margin-top:auto;padding:8px;font-size:11px;color:var(--cap);border-top:1px solid var(--b1)}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid var(--b1)}
+.top h2{font-size:20px;line-height:28px;font-weight:600;margin:0}
+.tabs{display:flex;gap:2px;background:var(--l2);padding:3px;border-radius:var(--r-s);margin-left:8px}
+.tabs span{padding:4px 12px;border-radius:6px;color:var(--fg2);cursor:pointer}
+.tabs span.on{background:var(--l1);color:var(--fg);box-shadow:0 1px 2px #0004}
+.top .grow{flex:1}
+.btn-primary{background:var(--btn);color:var(--btnfg);border:0;padding:7px 14px;border-radius:var(--r-s);font-weight:600;cursor:pointer}
+.btn-ghost{background:transparent;color:var(--fg2);border:1px solid var(--b2);padding:6px 12px;border-radius:var(--r-s);cursor:pointer}
+.banner{margin:12px 24px 0;display:flex;align-items:center;gap:10px;background:var(--l1);border:1px solid var(--b2);border-radius:var(--r-m);padding:10px 12px}
+.spinner{width:14px;height:14px;border-radius:50%;border:2px solid var(--brand);border-right-color:transparent;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bar{flex:1;height:4px;background:var(--l3);border-radius:2px;overflow:hidden}
+.bar>i{display:block;height:100%;width:43%;background:var(--brand)}
+.body{flex:1;overflow:auto;padding:16px 24px 24px}
+.row{display:flex;gap:8px;align-items:center;color:var(--fg2)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.card{background:var(--l1);border:1px solid var(--b1);border-radius:var(--r-m);padding:14px}
+.card .hd{display:flex;align-items:flex-start;gap:8px}
+.card .tt{font-size:14px;font-weight:600;line-height:22px}
+.card .meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--fg3);font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--b2);border-radius:999px;padding:1px 8px;font-size:11px;color:var(--fg2)}
+.chip.ok{border-color:transparent;background:var(--okbg);color:var(--ok)}
+.chip.warn{border-color:transparent;background:var(--warnbg);color:var(--warn)}
+.chip.err{border-color:transparent;background:var(--errbg);color:var(--err)}
+.chip.run{border-color:transparent;background:#7aaaff1f;color:var(--brand)}
+.card .ft{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--b1)}
+.card .ft .grow{flex:1}
+.play{display:inline-flex;align-items:center;gap:6px;background:var(--l2);border:1px solid var(--b2);color:var(--fg);border-radius:var(--r-s);padding:5px 10px;font-weight:600;cursor:pointer}
+.play:hover{background:var(--hov)}
+.sw{width:34px;height:20px;border-radius:999px;background:var(--ok);position:relative;flex:none}
+.sw i{position:absolute;right:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff}
+.sw.off{background:var(--idle)}
+.sw.off i{left:2px;right:auto}
+h3{font-size:13px;margin:22px 0 8px;color:var(--fg2);letter-spacing:.02em}
+table{width:100%;border-collapse:collapse}
+thead th{text-align:left;font-weight:500;color:var(--cap);font-size:11px;padding:6px 10px;border-bottom:1px solid var(--b1)}
+tbody td{padding:8px 10px;border-bottom:1px solid var(--b1);color:var(--fg2)}
+tbody tr:hover{background:var(--hov)}
+td .mono{font-family:var(--fm);font-size:12px;color:var(--fg)}
+.form{display:grid;grid-template-columns:220px 1fr;gap:0 16px;max-width:980px}
+.form .sec{grid-column:1/-1;height:1px;background:var(--b1);margin:6px 0}
+.form .lab{padding:12px 0;color:var(--fg2)}
+.form .lab b{display:block;color:var(--fg);font-weight:600}
+.form .lab small{color:var(--cap);font-size:11px}
+.form .fld{padding:12px 0}
+.ipt{width:100%;background:var(--l2);border:1px solid var(--b2);border-radius:var(--r-s);padding:7px 10px;color:var(--fg);font:inherit}
+.seg{display:inline-flex;gap:2px;background:var(--l2);padding:3px;border-radius:var(--r-s)}
+.seg span{padding:4px 10px;border-radius:6px;color:var(--fg2);cursor:pointer}
+.seg span.on{background:var(--l1);color:var(--fg)}
+.hint{color:var(--cap);font-size:11px;margin-top:4px}
+.mono-box{font-family:var(--fm);font-size:12px;background:var(--l2);border:1px solid var(--b1);border-radius:var(--r-s);padding:8px 10px;color:var(--fg2)}
+.footbar{display:flex;justify-content:flex-end;gap:8px;padding:12px 24px;border-top:1px solid var(--b1)}
+.toggle{position:fixed;right:20px;bottom:20px;background:var(--l1);border:1px solid var(--b2);color:var(--fg);border-radius:999px;padding:8px 14px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<section class="sheet">
+  <div class="label"><span>画板 5a · 任务与自动化（任务库 + 运行中 + 运行历史）</span><span>DESIGN.md §9.4</span></div>
+  <div class="frame">
+    <div class="rail">
+      <div class="dot"></div><div class="dot"></div>
+      <div class="dot on"><span class="badge">3</span></div>
+      <div class="dot"></div>
+    </div>
+    <nav class="nav">
+      <h1>日常工作台</h1>
+      <a href="#"><span>收件箱</span><span class="cnt">12</span></a>
+      <a href="#"><span>审查队列</span><span class="cnt">4</span></a>
+      <a href="#"><span>我的工作</span><span class="cnt">7</span></a>
+      <a href="#"><span>项目</span><span class="cnt">6</span></a>
+      <div class="grp">自动化</div>
+      <a class="on" href="#"><span>任务与自动化</span><span class="cnt">2 运行中</span></a>
+      <a href="#"><span>提示词与技能</span><span class="cnt">9</span></a>
+      <div class="grp">配置</div>
+      <a href="#"><span>设置</span></a>
+      <div class="foot">轮询正常 · 每 60s<br>下次同步 42s · 失败 0</div>
+    </nav>
+    <div class="main">
+      <div class="top">
+        <h2>任务与自动化</h2>
+        <div class="tabs"><span class="on">任务库</span><span>运行历史</span><span>触发器</span></div>
+        <div class="grow"></div>
+        <button class="btn-ghost">试跑</button>
+        <button class="btn-primary">＋ 新建任务</button>
+      </div>
+
+      <div class="banner">
+        <div class="spinner"></div>
+        <div style="font-weight:600">周五周报 正在运行</div>
+        <div class="row" style="font-size:12px">手动触发 · 已 12s</div>
+        <div class="bar"><i></i></div>
+        <button class="btn-ghost">取消</button>
+      </div>
+
+      <div class="body">
+        <div class="row" style="justify-content:space-between">
+          <div class="row" style="gap:6px">
+            <span class="chip">全部 8</span><span class="chip ok">启用 6</span><span class="chip">已停用 2</span>
+            <span class="chip err">上次失败 1</span>
+          </div>
+          <div class="row" style="gap:8px"><span>按上次运行 ▾</span><span>⌘K</span></div>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="hd"><div class="tt">周五周报</div><div class="grow" style="flex:1"></div><span class="sw" title="已启用"><i></i></span></div>
+            <div class="meta">
+              <span>⏱ 每周五 18:00 · Asia/Shanghai</span><span>补跑：跳过</span>
+            </div>
+            <div class="meta">
+              <span>上次 11-07 18:00 · 成功</span><span>成功率 96%</span><span>均 38s</span><span>≈12k tok</span>
+            </div>
+            <div class="ft">
+              <span class="chip run">session</span><span class="chip">read-only</span><span class="chip">artifact</span>
+              <div class="grow"></div>
+              <button class="play">▶ 立即运行</button><button class="btn-ghost">⋯</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="hd"><div class="tt">每日早报</div><div class="grow" style="flex:1"></div><span class="sw"><i></i></span></div>
+            <div class="meta"><span>⏱ 每天 08:30 · 工作日</span><span>补跑：补一次</span></div>
+            <div class="meta"><span>上次 今天 08:30 · 成功</span><span>成功率 100%</span><span>均 21s</span></div>
+            <div class="ft">
+              <span class="chip run">session</span><span class="chip">read-only</span>
+              <div class="grow"></div>
+              <button class="play">▶ 立即运行</button><button class="btn-ghost">⋯</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="hd"><div class="tt">批量审查（待我审的 MR）</div><div class="grow" style="flex:1"></div><span class="sw"><i></i></span></div>
+            <div class="meta"><span>⚡ 手动 / 事件触发</span><span>并发 3 · lane 按项目</span></div>
+            <div class="meta"><span>上次 11-08 09:12 · 部分失败（1/5）</span><span>成功率 80%</span></div>
+            <div class="ft">
+              <span class="chip run">fan-out 5</span><span class="chip err">1 失败</span>
+              <div class="grow"></div>
+              <button class="play">▶ 立即运行</button><button class="btn-ghost">⋯</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="hd"><div class="tt">合并 MR → 生成发布说明草稿</div><div class="grow" style="flex:1"></div><span class="sw"><i></i></span></div>
+            <div class="meta"><span>🔗 after：MR 已合并（hops ≤ 8）</span></div>
+            <div class="meta"><span>上次 11-07 16:20 · 成功</span><span>均 9s</span></div>
+            <div class="ft">
+              <span class="chip">headless</span><span class="chip">artifact</span>
+              <div class="grow"></div>
+              <button class="play">▶ 立即运行</button><button class="btn-ghost">⋯</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="hd"><div class="tt">依赖漏洞与升级巡检</div><div class="grow" style="flex:1"></div><span class="sw off"><i></i></span></div>
+            <div class="meta"><span>⏱ 每周一 10:00</span><span>已停用（下次不跑）</span></div>
+            <div class="meta"><span>上次 11-03 10:00 · 失败（token 过期）</span></div>
+            <div class="ft">
+              <span class="chip">command</span><span class="chip err">需处理</span>
+              <div class="grow"></div>
+              <button class="play">▶ 立即运行</button><button class="btn-ghost">⋯</button>
+            </div>
+          </div>
+
+          <div class="card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;color:var(--fg3)">
+            <div style="text-align:center">＋<div style="margin-top:4px">新建任务（也可从提示词模板生成）</div></div>
+          </div>
+        </div>
+
+        <h3>运行历史</h3>
+        <table>
+          <thead><tr><th style="width:150px">时间</th><th>任务</th><th style="width:130px">触发源</th><th style="width:100px">状态</th><th style="width:80px">耗时</th><th style="width:100px">Token</th><th>产物</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">11-08 10:02</td><td>周五周报</td><td>手动（你）</td><td><span class="chip run">运行中</span></td><td>12s</td><td>—</td><td>—</td></tr>
+            <tr><td class="mono">11-08 09:12</td><td>批量审查 5 个 MR</td><td>事件 · review_requested</td><td><span class="chip err">1 失败</span></td><td>2m41s</td><td>61.2k</td><td><a href="#" style="color:var(--link)">查看汇总卡</a></td></tr>
+            <tr><td class="mono">11-08 08:30</td><td>每日早报</td><td>定时</td><td><span class="chip ok">成功</span></td><td>21s</td><td>12.4k</td><td><a href="#" style="color:var(--link)">briefs/2026-11-08.md</a></td></tr>
+            <tr><td class="mono">11-07 18:00</td><td>周五周报</td><td>定时</td><td><span class="chip ok">成功</span></td><td>38s</td><td>12.0k</td><td><a href="#" style="color:var(--link)">reports/weekly-2026-11-07.md</a></td></tr>
+            <tr><td class="mono">11-07 16:20</td><td>发布说明草稿</td><td>上游 Job · 合并 MR</td><td><span class="chip ok">成功</span></td><td>9s</td><td>3.1k</td><td><a href="#" style="color:var(--link)">release-notes/v3.2.0.md</a></td></tr>
+            <tr><td class="mono">11-03 10:00</td><td>依赖漏洞巡检</td><td>定时</td><td><span class="chip err">失败</span></td><td>0.4s</td><td>—</td><td><a href="#" style="color:var(--link)">去看错误：token 过期</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="label"><span>画板 5b · 新建任务（分表单，写配置不写代码）</span><span>DESIGN.md §9.5</span></div>
+  <div class="frame">
+    <div class="rail"><div class="dot"></div><div class="dot"></div><div class="dot on"><span class="badge">3</span></div><div class="dot"></div></div>
+    <nav class="nav">
+      <h1>日常工作台</h1>
+      <a href="#"><span>收件箱</span><span class="cnt">12</span></a>
+      <a href="#"><span>审查队列</span><span class="cnt">4</span></a>
+      <a href="#"><span>我的工作</span><span class="cnt">7</span></a>
+      <a href="#"><span>项目</span><span class="cnt">6</span></a>
+      <div class="grp">自动化</div>
+      <a class="on" href="#"><span>任务与自动化</span><span class="cnt">2 运行中</span></a>
+      <a href="#"><span>提示词与技能</span><span class="cnt">9</span></a>
+      <div class="grp">配置</div>
+      <a href="#"><span>设置</span></a>
+      <div class="foot">轮询正常 · 每 60s</div>
+    </nav>
+    <div class="main">
+      <div class="top">
+        <h2>新建任务</h2>
+        <div class="grow"></div>
+        <button class="btn-ghost">取消</button>
+        <button class="btn-ghost">干跑一次</button>
+        <button class="btn-primary">保存并启用</button>
+      </div>
+      <div class="body">
+        <div class="form">
+          <div class="lab"><b>名称</b><small>面板与运行历史里显示</small></div>
+          <div class="fld"><input class="ipt" value="周五周报"></div>
+
+          <div class="lab"><b>描述</b><small>可选，给自己看的备注</small></div>
+          <div class="fld"><input class="ipt" value="汇总本周合并的 MR、提交与待办，写一份周报草稿"></div>
+
+          <div class="sec"></div>
+
+          <div class="lab"><b>触发方式</b><small>什么时候跑</small></div>
+          <div class="fld">
+            <div class="seg"><span>手动</span><span class="on">定时</span><span>事件</span><span>上游任务后</span></div>
+            <div class="hint">选「定时」时会多出 cron 与时区；选「上游任务后」会多出「哪个任务 / 什么状态」与 hops 提示。</div>
+          </div>
+
+          <div class="lab"><b>cron</b><small>5 段表达式</small></div>
+          <div class="fld">
+            <div style="display:flex;gap:8px"><input class="ipt" style="flex:2" value="0 18 * * 5"><input class="ipt" style="flex:1" value="Asia/Shanghai"></div>
+            <div class="hint">下一次：2026-11-13（周五）18:00 · 补跑策略 <b>跳过</b>（休眠/关机错过的期不补）</div>
+          </div>
+
+          <div class="sec"></div>
+
+          <div class="lab"><b>执行器</b><small>谁去干这活</small></div>
+          <div class="fld">
+            <div class="seg"><span class="on">session（可追问）</span><span>headless</span><span>command</span></div>
+            <div class="hint">session：真实会话，左侧可见、可追问；headless：隔离子进程，适合批量。</div>
+          </div>
+
+          <div class="lab"><b>内容</b><small>模板 / 技能 / 自由提示词</small></div>
+          <div class="fld">
+            <div style="display:flex;gap:8px"><input class="ipt" style="flex:1" value="模板：tpl-weekly@v3"><button class="btn-ghost">选择</button></div>
+            <div class="hint">模板里的 <span style="font-family:var(--fm)">{{date}}</span> 会被替换为运行日期；变量只来自白名单字段。</div>
+          </div>
+
+          <div class="lab"><b>目录与权限</b><small>在哪干、能不能写</small></div>
+          <div class="fld">
+            <div style="display:flex;gap:8px"><input class="ipt" style="flex:2" value="~/notes"><div class="seg" style="flex:1"><span class="on">只读</span><span>可写（独立 worktree）</span></div></div>
+          </div>
+
+          <div class="sec"></div>
+
+          <div class="lab"><b>参数</b><small>运行时可选，按钮弹表单</small></div>
+          <div class="fld">
+            <div class="mono-box">range = enum(this-week | last-week)，默认 this-week，必填</div>
+            <div class="hint">＋ 添加参数（string / number / enum / bool）</div>
+          </div>
+
+          <div class="lab"><b>产出</b><small>跑完留下什么</small></div>
+          <div class="fld">
+            <div class="seg"><span class="on">文件</span><span>卡片（需确认）</span><span>通知</span><span>新工作项</span></div>
+            <div class="mono-box" style="margin-top:8px">reports/weekly-{{date}}.md</div>
+          </div>
+
+          <div class="lab"><b>策略</b><small>怎么跑才安全</small></div>
+          <div class="fld">
+            <div style="display:flex;gap:8px">
+              <input class="ipt" value="并发 1"><input class="ipt" value="超时 10 分钟"><input class="ipt" value="重试 2 次 / 退避 5m">
+            </div>
+            <div class="hint">静默时段 22:00–08:00（任务照跑，通知延后）；每日上限 2 次；成本预算 60k tok。</div>
+          </div>
+
+          <div class="sec"></div>
+
+          <div class="lab"><b>试跑</b><small>先看渲染后的提示词</small></div>
+          <div class="fld">
+            <div class="mono-box">这次将以只读方式运行一次，不写任何外部系统；结果只给你看。</div>
+          </div>
+        </div>
+      </div>
+      <div class="footbar">
+        <span style="color:var(--cap);margin-right:auto;align-self:center">保存后可随时停用；停用不补跑已排队的运行</span>
+        <button class="btn-ghost">仅保存</button>
+        <button class="btn-primary">保存并启用</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<button class="toggle" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme==='dark'?'light':'dark'">切换明暗</button>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# daily-work-hub bundle patch.
+# One Host row. `config` seeds first-run values; the user's own patch layer
+# (profile cordis.patch.yml) overrides them and survives upgrades.
+- insert:
+    - id: daily-work-hub
+      name: 'daily-work-hub'
+      config:
+        instance: default
+        pollIntervalSec: 60

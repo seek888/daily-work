@@ -1,0 +1,43 @@
+{
+  "name": "daily-work-hub",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Daily work hub for software developers: GitLab MR/Issue inbox, review queue, one-click AI review — plus prompts and skills. Full-page panel inside DeepSeek Harness.",
+  "icon": "./icon.svg",
+  "exports": {
+    ".": "./index.js",
+    "./index": "./index.js",
+    "./client": "./client/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client/client.js",
+    "cordis.patch.yml",
+    "locale/zh.json",
+    "locale/en.json",
+    "icon.svg"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/schemastery": "^3.18.6-alpha.1"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/schemastery": {
+      "optional": true
+    }
+  }
+}

@@ -1,0 +1,16 @@
+# --- 团队协作状态（不进仓库）---
+.agent-teams/
+
+# --- 第三方参考仓库（克隆，不 vendor）---
+research/refs/
+
+# --- 依赖与产物 ---
+node_modules/
+pnpm-lock.yaml
+*.log
+
+# --- 编辑器 / 系统 ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

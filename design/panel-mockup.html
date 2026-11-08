@@ -1,0 +1,1218 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>日常工作台 · 大面板高保真线框（1440×900 ×4）</title>
+<style>
+/* 契约层：颜色/圆角/字号只经宿主 --dsw-alias-* / --dsw-radius-* / --dsw-font-* 取用。
+   第二参数仅用于宿主之外的独立预览；在宿主 main 槽内打开时宿主 token 优先，因此深浅色自动跟随宿主。
+   宿主以 body[data-ds-dark-theme] 标记深色；本文件的 data-theme 只是演示镜像。 */
+html{color-scheme:dark;
+  --p-bg:var(--dsw-alias-bg-base,var(--d-bg)); --p-l1:var(--dsw-alias-bg-layer-1,var(--d-l1));
+  --p-l2:var(--dsw-alias-bg-layer-2,var(--d-l2)); --p-l3:var(--dsw-alias-bg-layer-3,var(--d-l3));
+  --p-ovl:var(--dsw-alias-bg-overlay,var(--d-ovl));
+  --p-b1:var(--dsw-alias-border-l1,var(--d-b1)); --p-b2:var(--dsw-alias-border-l2,var(--d-b2));
+  --p-b3:var(--dsw-alias-border-l3,var(--d-b3)); --p-b4:var(--dsw-alias-border-l4,var(--d-b4));
+  --p-fg:var(--dsw-alias-label-primary,var(--d-fg)); --p-fg2:var(--dsw-alias-label-secondary,var(--d-fg2));
+  --p-fg3:var(--dsw-alias-label-tertiary,var(--d-fg3)); --p-cap:var(--dsw-alias-label-caption,var(--d-cap));
+  --p-hov:var(--dsw-alias-interactive-bg-hover,var(--d-hov));
+  --p-hovs:var(--dsw-alias-interactive-bg-hover-solid,var(--d-hovs));
+  --p-act:var(--dsw-alias-interactive-bg-active,var(--d-act));
+  --p-brand:var(--dsw-alias-state-business-primary,var(--d-brand));
+  --p-link:var(--dsw-alias-link,var(--d-link));
+  --p-btn:var(--dsw-alias-button-primary-fill,var(--d-btn));
+  --p-btnfg:var(--dsw-alias-label-primary-foreground,var(--d-btnfg));
+  --p-ghost:var(--dsw-alias-button-ghost-active-fill,var(--d-ghost));
+  --p-ok:var(--dsw-alias-state-success-primary,var(--d-ok)); --p-okbg:var(--dsw-alias-state-success-tertiary,var(--d-okbg));
+  --p-warn:var(--dsw-alias-state-warn-primary,var(--d-warn)); --p-warnl:var(--dsw-alias-state-warn-label,var(--d-warnl));
+  --p-warnbg:var(--dsw-alias-state-warn-tertiary,var(--d-warnbg));
+  --p-err:var(--dsw-alias-state-error-primary,var(--d-err)); --p-done:var(--dsw-alias-state-done-primary,var(--d-done));
+  --p-idle:var(--dsw-alias-state-idle-primary,var(--d-idle));
+  --p-code:var(--dsw-alias-markdown-code-block,var(--d-code));
+  --p-inline:var(--dsw-alias-markdown-inline-code,var(--d-inline)); --p-tag:var(--dsw-alias-markdown-tag,var(--d-tag));
+  --p-side:var(--dsw-specific-sidebar-fill,var(--d-side));
+  --p-addbg:var(--dsw-alias-file-diff-added-bg,var(--d-addbg)); --p-addg:var(--dsw-alias-file-diff-added-gutter,var(--d-addg));
+  --p-addm:var(--dsw-alias-file-diff-added-marker,var(--d-addm));
+  --p-delbg:var(--dsw-alias-file-diff-deleted-bg,var(--d-delbg)); --p-delg:var(--dsw-alias-file-diff-deleted-gutter,var(--d-delg));
+  --p-delm:var(--dsw-alias-file-diff-deleted-marker,var(--d-delm));
+  --p-codeadd:var(--dsw-alias-code-diff-added,var(--d-codeadd)); --p-codedel:var(--dsw-alias-code-diff-deleted,var(--d-codedel));
+  --p-tip:var(--dsw-alias-tooltip-bg,var(--d-tip)); --p-toast:var(--dsw-alias-toast-bg,var(--d-toast));
+  --p-toastfg:var(--dsw-alias-toast-label,var(--d-toastfg)); --p-skel:var(--dsw-alias-bg-skeleton,var(--d-skel));
+  --p-scroll:var(--dsw-alias-scrollbar-bg-l2,var(--d-scroll));
+  --p-focus:var(--dsw-focus-ring-color,var(--dsw-alias-state-business-primary,var(--d-brand)));
+  --r-xs:var(--dsw-radius-xs,4px); --r-sm:var(--dsw-radius-sm,8px); --r-md:var(--dsw-radius-md,12px);
+  --r-lg:var(--dsw-radius-lg,16px); --r-xl:var(--dsw-radius-xl,20px);
+  --ff:var(--dsw-font-family,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif);
+  --fm:var(--ds-font-family-code,ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace);
+  --fr:var(--dsw-focus-ring-width,2px)}
+/* 演示兜底调色板：数值取自宿主静态调色板，仅当宿主 token 缺失时生效 */
+html[data-theme=dark]{--d-bg:#151517;--d-l1:#232324;--d-l2:#2c2c2e;--d-l3:#353638;--d-ovl:#43454a;
+  --d-b1:#ffffff0f;--d-b2:#ffffff1f;--d-b3:#ffffff29;--d-b4:#ffffff1a;
+  --d-fg:#f9fafb;--d-fg2:#cfd3d6;--d-fg3:#adb2b8;--d-cap:#81858c;
+  --d-hov:#ffffff14;--d-hovs:#353638;--d-act:#ffffff24;
+  --d-brand:#7aaaff;--d-link:#7aaaff;--d-btn:#f9fafb;--d-btnfg:#0f1115;--d-ghost:#43454a;
+  --d-ok:#22c55e;--d-okbg:#233c2c;--d-warn:#f59e0b;--d-warnl:#dd8629;--d-warnbg:#27241f;
+  --d-err:#f25a5a;--d-done:#a78bfa;--d-idle:#545557;--d-code:#1b1b1c;--d-inline:#292929;--d-tag:#2c2c2e;
+  --d-side:#151517;--d-addbg:#1f3124;--d-addg:#132016;--d-addm:#41c977;--d-delbg:#3c1f1b;--d-delg:#28130e;
+  --d-delm:#fa423e;--d-codeadd:#22c55e1f;--d-codedel:#f25a5a1f;--d-tip:#43454a;--d-toast:#43454a;
+  --d-toastfg:#fff;--d-skel:#ffffff14;--d-scroll:#545557}
+html[data-theme=light]{color-scheme:light;--d-bg:#fff;--d-l1:#fff;--d-l2:#fff;--d-l3:#fff;--d-ovl:#e9ecf2;
+  --d-b1:#0000000a;--d-b2:#0000001a;--d-b3:#0000001f;--d-b4:#00000029;
+  --d-fg:#0f1115;--d-fg2:#61666b;--d-fg3:#81858c;--d-cap:#adb2b8;
+  --d-hov:#2631480f;--d-hovs:#f1f3f5;--d-act:#2631481a;
+  --d-brand:#4176e6;--d-link:#4176e6;--d-btn:#0f1115;--d-btnfg:#fff;--d-ghost:#ebeef2;
+  --d-ok:#22c55e;--d-okbg:#e6faed;--d-warn:#f59e0b;--d-warnl:#dd8629;--d-warnbg:#fef5e7;
+  --d-err:#ec1313;--d-done:#7c3aed;--d-idle:#d4d4d4;--d-code:#f9fafb;--d-inline:#fafafa;--d-tag:#f1f3f5;
+  --d-side:#f9fafb;--d-addbg:#e6f4e7;--d-addg:#edf7ed;--d-addm:#01a241;--d-delbg:#fce6e2;--d-delg:#fdece9;
+  --d-delm:#ba2723;--d-codeadd:#22c55e14;--d-codedel:#ec131314;--d-tip:#2c2c2e;--d-toast:#353638;
+  --d-toastfg:#fff;--d-skel:#0000000a;--d-scroll:#e5e5e5}
+/* 演示外壳（不属于插件 UI，仅承载 4 张 1440×900 画板） */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#0b0c0e;font-family:var(--ff);-webkit-font-smoothing:antialiased}
+html[data-theme=light] body{background:#eceef2}
+.mockbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;padding:13px 24px;
+  background:#111214ee;border-bottom:1px solid #ffffff14;color:#e8e9eb;backdrop-filter:blur(8px);font-size:13px}
+html[data-theme=light] .mockbar{background:#ffffffee;border-bottom-color:#00000014;color:#0f1115}
+.mockbar h1{margin:0;font-size:14px;font-weight:600}
+.mockbar .sub{color:#8b8f96;font-size:12px}
+.mockbar .sp{flex:1}
+.mockbar a{color:inherit;text-decoration:none;padding:5px 9px;border-radius:8px;border:1px solid #ffffff1f;font-size:12px}
+html[data-theme=light] .mockbar a{border-color:#0000001a}
+.mockbar button{font:inherit;font-size:12px;color:inherit;background:0 0;border:1px solid #ffffff1f;border-radius:8px;padding:5px 10px;cursor:pointer}
+html[data-theme=light] .mockbar button{border-color:#0000001a}
+.mockbar a:hover,.mockbar button:hover{background:#ffffff14}
+.wrap{padding:26px 24px 64px;display:flex;flex-direction:column;gap:26px;align-items:center}
+.board{width:1440px}
+.bcap{display:flex;align-items:baseline;gap:10px;margin:0 0 8px;color:#cfd3d6;font-size:12px}
+html[data-theme=light] .bcap{color:#545557}
+.bcap b{color:#e8e9eb;font-weight:600}
+html[data-theme=light] .bcap b{color:#0f1115}
+.bcap span{color:#81858c}
+/* 画板骨架：宿主顶带 30 / 宿主侧栏 56 / 导航 220 / 列表 380 / 详情自适应(1440→784) */
+.canvas{width:1440px;height:900px;display:grid;overflow:hidden;position:relative;
+  grid-template-columns:56px 220px 380px minmax(0,1fr);grid-template-rows:30px minmax(0,1fr) 26px;
+  background:var(--p-bg);color:var(--p-fg);font-size:13px;line-height:20px;
+  border:1px solid #ffffff14;border-radius:14px;font-family:var(--ff)}
+html[data-theme=light] .canvas{border-color:#0000001a}
+.canvas ::-webkit-scrollbar{width:10px;height:10px}
+.canvas ::-webkit-scrollbar-thumb{background:var(--p-scroll);border-radius:6px;border:3px solid transparent;background-clip:content-box}
+.topbar{grid-column:1/-1;display:flex;align-items:center;gap:10px;padding:0 12px;border-bottom:.5px solid var(--p-b1);
+  color:var(--p-cap);font-size:11px;line-height:16px;background:var(--p-bg)}
+.topbar .dots{display:flex;gap:5px}
+.topbar i{width:8px;height:8px;border-radius:50%;background:var(--p-idle)}
+.topbar .ttl{color:var(--p-fg2)}
+.topbar .sep{width:1px;height:10px;background:var(--p-b3)}
+.topbar .sp{flex:1}
+/* 宿主侧栏收起态 56px：本插件图标 + 未读徽标（徽标在注册的 icon 组件内渲染） */
+.rail{grid-column:1;grid-row:2;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;
+  border-right:.5px solid var(--p-b1);background:var(--p-side)}
+.ri{position:relative;width:32px;height:32px;display:grid;place-items:center;border-radius:var(--r-sm);
+  border:0;background:0 0;color:var(--p-fg3);cursor:pointer;padding:0}
+.ri:hover{background:var(--p-hov);color:var(--p-fg2)}
+.ri[data-on=true]{background:var(--p-ghost);color:var(--p-fg)}
+.ri[data-on=true]::before{content:"";position:absolute;left:-8px;top:9px;bottom:9px;width:2px;border-radius:2px;background:var(--p-brand)}
+.rail .grow{flex:1}
+.badge{position:absolute;top:0;right:-1px;min-width:14px;height:14px;padding:0 3px;border-radius:7px;
+  background:var(--p-err);color:#fff;font-size:9px;line-height:14px;font-weight:600;
+  display:grid;place-items:center;border:1.5px solid var(--p-side)}
+/* 面板一级导航 */
+.nav{grid-column:2;grid-row:2;display:flex;flex-direction:column;min-height:0;padding:10px 8px 8px;
+  border-right:.5px solid var(--p-b1);background:var(--p-bg)}
+.nav .brand{display:flex;align-items:center;gap:8px;padding:4px 8px 10px;font-size:13px;font-weight:600;line-height:20px}
+.nav .brand .mk{width:20px;height:20px;border-radius:6px;background:var(--p-btn);color:var(--p-btnfg);
+  display:grid;place-items:center;font-size:11px;font-weight:700}
+.nav .grp{padding:12px 8px 4px;color:var(--p-cap);font-size:11px;line-height:16px}
+.nav .item{display:flex;align-items:center;gap:9px;height:32px;padding:0 8px;border-radius:var(--r-sm);
+  color:var(--p-fg2);font-size:13px;border:0;background:0 0;font-family:inherit;text-align:left;
+  width:100%;cursor:pointer}
+.nav .item:hover{background:var(--p-hov);color:var(--p-fg)}
+.nav .item[data-on=true]{background:var(--p-ghost);color:var(--p-fg);font-weight:500}
+.nav .item .n{margin-left:auto;color:var(--p-cap);font-size:11px;font-variant-numeric:tabular-nums}
+.nav .item .n.hot{color:var(--p-brand)}
+.nav .foot{margin-top:auto;display:flex;flex-direction:column;gap:6px;padding:8px 8px 4px;
+  border-top:.5px solid var(--p-b1);color:var(--p-cap);font-size:11px;line-height:16px}
+.nav .foot .row{display:flex;align-items:center;gap:6px}
+.nav .pulse{width:6px;height:6px;border-radius:50%;background:var(--p-ok);flex:none}
+.ic{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ic.s12{width:12px;height:12px;stroke-width:1.6}
+.ic.s14{width:14px;height:14px}
+/* 列表列 380 */
+.list{grid-column:3;grid-row:2;display:flex;flex-direction:column;min-height:0;
+  border-right:.5px solid var(--p-b1);background:var(--p-bg)}
+.lhead{flex:none;padding:12px 14px 0}
+.lhead .r1{display:flex;align-items:center;gap:8px}
+.lhead h2{margin:0;font-size:14px;font-weight:600;line-height:22px}
+.lcount{color:var(--p-cap);font-size:12px;line-height:18px}
+.lhead .acts{margin-left:auto;display:flex;gap:2px}
+.iconbtn{width:26px;height:26px;display:grid;place-items:center;border-radius:var(--r-sm);border:0;
+  background:0 0;color:var(--p-cap);cursor:pointer;padding:0}
+.iconbtn:hover{background:var(--p-hov);color:var(--p-fg2)}
+.iconbtn:focus-visible,.btn:focus-visible,.switch:focus-visible{outline:var(--fr) solid var(--p-focus);outline-offset:1px}
+.search{display:flex;align-items:center;gap:7px;height:30px;margin:10px 0 8px;padding:0 9px;
+  border:.5px solid var(--p-b2);border-radius:var(--r-sm);color:var(--p-cap);font-size:12px}
+.search .kbd{margin-left:auto}
+.chips{display:flex;gap:6px;padding:0 14px 8px;overflow:hidden}
+.chip{height:24px;padding:0 9px;border-radius:12px;border:.5px solid var(--p-b3);background:0 0;color:var(--p-fg2);
+  font-size:11px;line-height:22px;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.chip:hover{background:var(--p-hov)}
+.chip[data-on=true]{background:var(--p-ghost);border-color:transparent;color:var(--p-fg);font-weight:500}
+.chip.brand[data-on=true]{background:color-mix(in srgb,var(--p-brand) 14%,transparent);color:var(--p-brand)}
+.lscroll{flex:1;min-height:0;overflow-y:auto;padding:0 8px 8px}
+.grp{display:flex;align-items:center;gap:6px;padding:10px 6px 4px;color:var(--p-fg3);font-size:11px;line-height:16px;font-weight:500}
+.grp .n{color:var(--p-cap);font-weight:400}
+.grp .ln{flex:1;height:.5px;background:var(--p-b1)}
+.row{position:relative;display:flex;gap:9px;padding:9px 8px 10px;border-radius:var(--r-md);cursor:pointer}
+.row:hover{background:var(--p-hov)}
+.row[data-sel=true]{background:var(--p-ghost)}
+.row[data-sel=true]::after{content:"";position:absolute;inset:0;border-radius:var(--r-md);
+  box-shadow:inset 0 0 0 1px var(--p-b3);pointer-events:none}
+.row .cb{flex:none;margin-top:2px}
+.row .body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.row .t1{display:flex;align-items:center;gap:6px;min-width:0}
+.row .src{flex:none;color:var(--p-fg3);display:inline-flex}
+.row .ttl{font-size:13px;line-height:19px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .unread{flex:none;width:6px;height:6px;border-radius:50%;background:var(--p-brand)}
+.row .t2{display:flex;align-items:center;gap:5px;color:var(--p-fg3);font-size:11px;line-height:16px;white-space:nowrap;overflow:hidden}
+.row .proj{color:var(--p-fg2);font-family:var(--fm)}
+.row .t3{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.row .time{margin-left:auto;color:var(--p-cap);flex:none}
+/* 徽标 */
+.pill{height:18px;padding:0 6px;border-radius:var(--r-xs);display:inline-flex;align-items:center;gap:3px;
+  font-size:10px;line-height:18px;font-weight:500;white-space:nowrap;border:.5px solid transparent}
+.pill .ic{width:10px;height:10px;stroke-width:1.8}
+.pill-brand{background:color-mix(in srgb,var(--p-brand) 15%,transparent);color:var(--p-brand)}
+.pill-err{background:color-mix(in srgb,var(--p-err) 14%,transparent);color:var(--p-err)}
+.pill-warn{background:color-mix(in srgb,var(--p-warn) 16%,transparent);color:var(--p-warnl)}
+.pill-ok{background:color-mix(in srgb,var(--p-ok) 14%,transparent);color:var(--p-ok)}
+.pill-done{background:color-mix(in srgb,var(--p-done) 16%,transparent);color:var(--p-done)}
+.pill-mute{background:var(--p-hov);color:var(--p-fg3)}
+.pill-line{background:0 0;border-color:var(--p-b3);color:var(--p-fg3)}
+/* 详情列 */
+.detail{grid-column:4;grid-row:2;display:flex;min-height:0;background:var(--p-bg)}
+.dtmain{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+.dthead{flex:none;padding:12px 18px 0;border-bottom:.5px solid var(--p-b1)}
+.crumb{display:flex;align-items:center;gap:6px;color:var(--p-cap);font-size:11px;line-height:16px}
+.crumb code{font-family:var(--fm);color:var(--p-fg2)}
+.dt1{display:flex;align-items:flex-start;gap:10px;margin:6px 0}
+.dt1 h1{margin:0;font-size:16px;line-height:24px;font-weight:600;min-width:0}
+.auacts{margin-left:auto;display:flex;align-items:center;gap:6px;flex:none}
+.dmeta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:var(--p-fg3);font-size:11px;line-height:18px;margin-bottom:8px}
+.dmeta .who{color:var(--p-fg2);font-weight:500}
+.avatar{width:16px;height:16px;border-radius:50%;background:var(--p-ghost);color:var(--p-fg2);
+  display:inline-grid;place-items:center;font-size:9px;font-weight:600;flex:none}
+.branch{display:inline-flex;align-items:center;gap:4px;padding:1px 5px;border-radius:var(--r-xs);
+  background:var(--p-tag);color:var(--p-fg2);font-family:var(--fm);font-size:11px}
+.tabs{display:flex;align-items:center;gap:2px;margin:0 -18px;padding:0 14px}
+.tab{position:relative;height:34px;padding:0 10px;border:0;background:0 0;font-family:inherit;color:var(--p-fg3);
+  font-size:12px;cursor:pointer;border-radius:var(--r-sm) var(--r-sm) 0 0}
+.tab:hover{background:var(--p-hov);color:var(--p-fg2)}
+.tab[data-on=true]{color:var(--p-fg);font-weight:500}
+.tab[data-on=true]::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:2px;border-radius:2px;background:var(--p-fg)}
+.tab .n{color:var(--p-cap);font-size:11px;margin-left:4px}
+.btn{height:28px;padding:0 10px;border-radius:var(--r-sm);border:.5px solid var(--p-b3);background:var(--p-bg);
+  color:var(--p-fg);font:inherit;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.btn:hover{background:var(--p-hov)}
+.btn-primary{background:var(--p-btn);color:var(--p-btnfg);border-color:transparent;font-weight:500}
+.btn-primary:hover{opacity:.88;background:var(--p-btn)}
+.btn-ghost{border-color:transparent;background:0 0;color:var(--p-fg2)}
+.btn-ghost:hover{background:var(--p-hov);color:var(--p-fg)}
+.btn-sm{height:24px;padding:0 8px;font-size:11px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.kbd{border:.5px solid var(--p-b3);border-radius:var(--r-xs);padding:0 4px;color:var(--p-fg3);
+  font-family:var(--fm);font-size:10px;line-height:15px;display:inline-block}
+.dscroll{flex:1;min-height:0;overflow-y:auto;padding:14px 18px 18px;display:flex;flex-direction:column;gap:12px}
+.card{border:.5px solid var(--p-b2);border-radius:var(--r-md);overflow:hidden}
+.card .ch{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:.5px solid var(--p-b1);
+  color:var(--p-fg2);font-size:12px;line-height:18px}
+.card .ch b{font-weight:500;color:var(--p-fg)}
+.card .ch .sp{margin-left:auto;display:flex;gap:6px;align-items:center}
+.card .cb{padding:10px 12px;font-size:12px;line-height:19px;color:var(--p-fg2)}
+.kv{display:grid;grid-template-columns:64px 1fr;gap:5px 10px;font-size:12px;line-height:18px;color:var(--p-fg3)}
+.kv b{color:var(--p-fg2);font-weight:400}
+.job{display:flex;align-items:center;gap:8px;padding:6px 12px;font-size:12px;line-height:18px;color:var(--p-fg2)}
+.job+.job{border-top:.5px solid var(--p-b1)}
+.job .st{width:12px;height:12px;border-radius:50%;flex:none;display:grid;place-items:center}
+.job .st.ok{background:color-mix(in srgb,var(--p-ok) 22%,transparent);color:var(--p-ok)}
+.job .st.no{background:color-mix(in srgb,var(--p-err) 22%,transparent);color:var(--p-err)}
+.job .nm{font-family:var(--fm);font-size:11px}
+.job .dur{margin-left:auto;color:var(--p-cap);font-size:11px}
+.blocker{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:var(--r-sm);
+  background:color-mix(in srgb,var(--p-warn) 12%,transparent);color:var(--p-warnl);font-size:12px;line-height:18px}
+.blocker .ic{margin-top:1px}
+.blocker b{font-weight:500}
+/* AI 审查抽屉：停靠右侧，可拖宽 360–520 */
+.drawer{width:404px;flex:none;display:flex;flex-direction:column;min-height:0;
+  border-left:.5px solid var(--p-b2);background:var(--p-l1)}
+.dwhead{flex:none;display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:.5px solid var(--p-b1)}
+.dwhead .ttl{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;line-height:18px}
+.dwhead .ttl .ic{color:var(--p-brand)}
+.dwhead .sp{margin-left:auto;display:flex;gap:2px;align-items:center}
+.dwscroll{flex:1;min-height:0;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.verdict{border:.5px solid var(--p-b2);border-radius:var(--r-md);padding:10px 11px;background:var(--p-l2);
+  display:flex;flex-direction:column;gap:7px}
+.verdict .top{display:flex;align-items:center;gap:7px}
+.verdict .lvl{font-size:12px;font-weight:600;line-height:18px;color:var(--p-warnl)}
+.verdict .conf{margin-left:auto;color:var(--p-cap);font-size:10px;font-family:var(--fm)}
+.verdict p{margin:0;color:var(--p-fg2);font-size:12px;line-height:18px}
+.meter{height:4px;border-radius:2px;background:var(--p-hov);overflow:hidden;display:flex}
+.meter i{display:block;height:100%}
+.m1{width:34%;background:var(--p-err)} .m2{width:38%;background:var(--p-warn)} .m3{width:28%;background:var(--p-ok)}
+.find{border:.5px solid var(--p-b2);border-radius:var(--r-md);background:var(--p-bg);overflow:hidden}
+.find+.find{margin-top:8px}
+.find .fh{display:flex;align-items:center;gap:6px;padding:7px 10px;border-bottom:.5px solid var(--p-b1)}
+.sev{height:17px;padding:0 5px;border-radius:var(--r-xs);font-size:10px;line-height:17px;font-weight:600;flex:none}
+.p1{background:color-mix(in srgb,var(--p-err) 16%,transparent);color:var(--p-err)}
+.p2{background:color-mix(in srgb,var(--p-warn) 18%,transparent);color:var(--p-warnl)}
+.p3{background:var(--p-hov);color:var(--p-fg3)}
+.find .ft{flex:1;min-width:0;font-size:12px;line-height:18px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.find .loc{font-family:var(--fm);font-size:10px;color:var(--p-cap);flex:none}
+.find .fb{padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.find .fb p{margin:0;font-size:12px;line-height:18px;color:var(--p-fg2)}
+.ev{font-family:var(--fm);font-size:11px;line-height:17px;background:var(--p-code);border-radius:var(--r-xs);
+  padding:6px 8px;color:var(--p-fg2);white-space:pre;overflow:hidden;text-overflow:ellipsis}
+.ev em{font-style:normal;background:var(--p-codeadd);color:var(--p-addm);border-radius:2px;padding:0 1px}
+.find .fa{display:flex;align-items:center;gap:6px;padding:0 10px 8px;color:var(--p-cap);font-size:11px}
+.find .fa .sp{margin-left:auto;display:flex;gap:4px}
+.ask{flex:none;border-top:.5px solid var(--p-b1);padding:9px 10px;display:flex;flex-direction:column;gap:7px}
+.askbox{display:flex;align-items:center;gap:7px;min-height:32px;padding:6px 8px;border:.5px solid var(--p-b3);
+  border-radius:var(--r-sm);background:var(--p-bg);color:var(--p-cap);font-size:12px}
+.caret{width:1px;height:14px;background:var(--p-brand);animation:bl 1.1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.dwfoot{display:flex;align-items:center;gap:6px}
+.dwfoot .sp{flex:1}
+.note{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:var(--r-sm);
+  background:var(--p-l2);color:var(--p-fg2);font-size:12px;line-height:18px}
+.note .ic{color:var(--p-brand);margin-top:1px}
+.note.warn{background:color-mix(in srgb,var(--p-warn) 10%,transparent);color:var(--p-warnl)}
+.note.warn .ic{color:var(--p-warn)}
+/* 状态条 / toast */
+.statusbar{grid-column:2/-1;grid-row:3;display:flex;align-items:center;gap:10px;padding:0 12px;
+  border-top:.5px solid var(--p-b1);color:var(--p-cap);font-size:11px}
+.statusbar .sp{flex:1}
+.statusbar .ks{display:flex;align-items:center;gap:5px}
+.toast{position:absolute;right:16px;bottom:38px;z-index:6;display:flex;align-items:center;gap:8px;
+  padding:9px 12px;border-radius:var(--r-md);background:var(--p-toast);color:var(--p-toastfg);
+  font-size:12px;box-shadow:0 8px 26px #0006}
+.toast .ic{color:var(--p-ok)}
+/* diff：文件树 190 + 双栏 hunk */
+.diffwrap{grid-column:4;grid-row:2;display:grid;grid-template-columns:190px minmax(0,1fr);min-height:0}
+.ftree{display:flex;flex-direction:column;min-height:0;border-right:.5px solid var(--p-b1);background:var(--p-side)}
+.ftree .fh{padding:9px 10px 6px;border-bottom:.5px solid var(--p-b1);display:flex;flex-direction:column;gap:5px}
+.ftree .fh .r{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--p-fg3);line-height:16px}
+.ftree .fh .r b{color:var(--p-fg);font-size:12px;font-weight:500}
+.ftree .fl{flex:1;min-height:0;overflow-y:auto;padding:4px 4px 8px}
+.fdir{padding:5px 6px 2px;color:var(--p-cap);font-size:10px;line-height:14px;font-family:var(--fm)}
+.frow{display:flex;align-items:center;gap:5px;height:26px;padding:0 6px;border-radius:var(--r-xs);
+  font-size:11px;line-height:16px;color:var(--p-fg2);cursor:pointer}
+.frow:hover{background:var(--p-hov)}
+.frow[data-on=true]{background:var(--p-ghost);color:var(--p-fg)}
+.frow .st{width:12px;flex:none;font-family:var(--fm);font-size:10px;text-align:center;font-weight:600}
+.st.m{color:var(--p-warnl)} .st.a{color:var(--p-ok)} .st.d{color:var(--p-err)}
+.frow .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frow .stat{font-family:var(--fm);font-size:10px;color:var(--p-cap);flex:none}
+.stat i{color:var(--p-addm);font-style:normal} .stat em{color:var(--p-delm);font-style:normal}
+.diff{display:flex;flex-direction:column;min-height:0}
+.diffhead{flex:none;display:flex;align-items:center;gap:8px;padding:0 12px;height:36px;
+  border-bottom:.5px solid var(--p-b1);color:var(--p-fg3);font-size:11px}
+.diffhead .fname{font-family:var(--fm);color:var(--p-fg2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.diffhead .sp{margin-left:auto;display:flex;gap:6px}
+.dscroll2{flex:1;min-height:0;overflow-y:auto;font-family:var(--fm);font-size:11px;line-height:18px}
+.hunkh{padding:5px 10px;background:var(--p-code);color:var(--p-fg3);border-top:.5px solid var(--p-b1);
+  border-bottom:.5px solid var(--p-b1);font-size:10px}
+.hunk{display:grid;grid-template-columns:40px minmax(0,1fr) 40px minmax(0,1fr)}
+.hunk>div{padding:0 6px;min-height:18px;overflow:hidden;white-space:pre}
+.hunk .ln{text-align:right;color:var(--p-cap);background:var(--p-code);font-size:10px;padding-right:5px}
+.hunk .a{background:var(--p-addbg)} .hunk .d{background:var(--p-delbg)}
+.hunk .x{background:var(--p-hov)}
+.hunk .ln.a{background:var(--p-addg);color:var(--p-addm)} .hunk .ln.d{background:var(--p-delg);color:var(--p-delm)}
+.mark{opacity:.9}
+.tok{color:var(--p-brand)} .str{color:var(--p-ok)} .cmt{color:var(--p-cap);font-style:italic}
+.thread{margin:8px 10px 12px;border:.5px solid var(--p-b2);border-radius:var(--r-md);background:var(--p-l1)}
+.thread .th{display:flex;align-items:center;gap:6px;padding:7px 10px;border-bottom:.5px solid var(--p-b1);font-size:11px;color:var(--p-cap)}
+.thread .body{padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.thread p{margin:0;font-size:12px;line-height:18px;color:var(--p-fg2)}
+.thread .acts{display:flex;gap:6px;padding:0 10px 8px}
+/* 提示词与技能编辑器 */
+.editor{grid-column:4;grid-row:2;display:flex;flex-direction:column;min-height:0}
+.edhead{flex:none;padding:12px 18px 0;border-bottom:.5px solid var(--p-b1)}
+.edhead .r1{display:flex;align-items:center;gap:8px}
+.edhead h1{margin:0;font-size:16px;line-height:24px;font-weight:600}
+.edhead .sp{margin-left:auto;display:flex;align-items:center;gap:8px}
+.edsub{display:flex;align-items:center;gap:6px;margin:4px 0 8px;color:var(--p-fg3);font-size:11px;line-height:18px;flex-wrap:wrap}
+.switch{position:relative;width:34px;height:20px;border-radius:10px;border:0;padding:0;cursor:pointer;
+  background:var(--p-idle);transition:background .15s;flex:none}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+  background:var(--p-bg);transition:transform .15s;box-shadow:0 1px 2px #0004}
+.switch[data-on=true]{background:var(--p-fg)}
+.switch[data-on=true]::after{transform:translateX(14px)}
+.edpane{flex:1;min-height:0;overflow-y:auto}
+.pane{display:grid;grid-template-columns:38px minmax(0,1fr);font-family:var(--fm);font-size:11px;
+  line-height:19px;padding:12px 0}
+.pane .n{text-align:right;padding-right:8px;color:var(--p-cap);font-size:10px;user-select:none}
+.pane .l{white-space:pre-wrap;padding-right:16px;color:var(--p-fg2)}
+.varhl{background:color-mix(in srgb,var(--p-brand) 16%,transparent);color:var(--p-brand);
+  border-radius:3px;padding:0 3px;font-weight:500}
+.edfoot{flex:none;display:flex;align-items:center;gap:8px;padding:8px 18px;border-top:.5px solid var(--p-b1);color:var(--p-cap);font-size:11px}
+.edfoot .sp{flex:1}
+.varbar{display:flex;align-items:center;gap:6px;padding:7px 14px;border-bottom:.5px solid var(--p-b1);
+  color:var(--p-cap);font-size:11px;flex-wrap:wrap;background:var(--p-l1)}
+.vchip{height:20px;padding:0 6px;border-radius:var(--r-xs);background:color-mix(in srgb,var(--p-brand) 12%,transparent);
+  color:var(--p-brand);font-family:var(--fm);font-size:10px;line-height:20px}
+.vlist{padding:12px 18px;display:flex;flex-direction:column;gap:8px}
+.vitem{display:flex;align-items:center;gap:8px;padding:9px 12px;border:.5px solid var(--p-b2);border-radius:var(--r-md);font-size:12px}
+.vitem .sp{margin-left:auto;display:flex;gap:5px;align-items:center}
+.vitem code{font-family:var(--fm);font-size:11px;color:var(--p-fg2)}
+/* 设置页：与宿主入口型页面同构（page inset clamp(24,4vw,48) / 内容 960 / 标题 20-28 + 说明 13-20） */
+.settings{grid-column:4;grid-row:2;min-height:0;overflow-y:auto;padding:0 clamp(24px,4vw,48px) 48px}
+.spage{max-width:960px;margin:0 auto}
+.spage .ph{display:flex;align-items:flex-start;gap:16px;padding-top:28px}
+.spage h1{margin:0;font-size:20px;font-weight:500;line-height:28px}
+.spage .pi{margin:4px 0 0;color:var(--p-fg2);font-size:13px;line-height:20px}
+.spage .ph .sp{margin-left:auto;display:flex;gap:8px}
+.sgroup{display:flex;flex-direction:column;gap:8px;margin-top:24px}
+.sgroup>h3{margin:0;font-size:14px;font-weight:500;line-height:22px}
+.sgroup>.desc{margin:0;color:var(--p-fg3);font-size:12px;line-height:18px}
+.srow{display:flex;align-items:center;gap:10px;min-height:44px;padding:9px 12px;
+  border-bottom:.5px solid var(--p-b1);font-size:13px;line-height:20px}
+.srow:last-child{border-bottom:0}
+.srow .lab{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.srow .lab b{font-weight:400}
+.srow .lab span{color:var(--p-fg3);font-size:11px;line-height:16px}
+.scard{border:.5px solid var(--p-b2);border-radius:var(--r-md);overflow:hidden}
+.input{height:30px;padding:0 8px;border:.5px solid var(--p-b3);border-radius:var(--r-sm);color:var(--p-fg);
+  font-family:var(--fm);font-size:12px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.input.plain{font-family:var(--ff)}
+.select{height:30px;padding:0 6px 0 8px;border:.5px solid var(--p-b3);border-radius:var(--r-sm);color:var(--p-fg);
+  font-size:12px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.select .ic{color:var(--p-cap)}
+.radio{display:inline-flex;align-items:center;gap:6px;color:var(--p-fg2);font-size:12px}
+.rd{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--p-b4);flex:none;display:grid;place-items:center}
+.rd[data-on=true]{border-color:var(--p-fg)}
+.rd[data-on=true]::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--p-fg)}
+.cbx{width:14px;height:14px;border-radius:var(--r-xs);border:1.5px solid var(--p-b4);display:grid;place-items:center;
+  color:transparent;background:0 0;padding:0;cursor:pointer;flex:none}
+.cbx[data-on=true]{background:var(--p-brand);border-color:var(--p-brand);color:#fff}
+.cbx .ic{width:10px;height:10px;stroke-width:2.4}
+.batch{flex:none;display:flex;align-items:center;gap:6px;margin:0 8px 8px;padding:7px 9px;
+  border:.5px solid var(--p-b2);border-radius:var(--r-md);background:var(--p-l1);font-size:11px;color:var(--p-fg2)}
+.batch b{color:var(--p-fg);font-weight:500}
+.batch .sp{flex:1}
+/* 提示词列表行 */
+.prow{display:flex;gap:9px;padding:9px 8px 10px;border-radius:var(--r-md);cursor:pointer}
+.prow:hover{background:var(--p-hov)}
+.prow[data-sel=true]{background:var(--p-ghost)}
+.prow .ico{width:26px;height:26px;border-radius:var(--r-sm);border:.5px solid var(--p-b3);display:grid;
+  place-items:center;color:var(--p-fg3);flex:none;margin-top:1px}
+.prow .b{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.prow .t{font-size:13px;line-height:19px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prow .m{color:var(--p-fg3);font-size:11px;line-height:16px;display:flex;align-items:center;gap:5px}
+.prow .m code{font-family:var(--fm)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-inbox" viewBox="0 0 16 16"><path d="M2 9h3l1 2h4l1-2h3"/><path d="M2 9l2-6h8l2 6v4H2z"/></symbol>
+  <symbol id="i-queue" viewBox="0 0 16 16"><path d="M3 4h10M3 8h6M3 12h4"/><path d="M10.5 11.5l1.5 1.5 2.5-2.5"/></symbol>
+  <symbol id="i-work" viewBox="0 0 16 16"><path d="M4 3h8v10H4z"/><path d="M6 6h4M6 9h3"/></symbol>
+  <symbol id="i-proj" viewBox="0 0 16 16"><path d="M3 5.5l5-2.5 5 2.5v5l-5 2.5-5-2.5z"/><path d="M3 5.5l5 2.5 5-2.5"/></symbol>
+  <symbol id="i-prompt" viewBox="0 0 16 16"><path d="M4 5l3 3-3 3M9.5 11h3"/></symbol>
+  <symbol id="i-rules" viewBox="0 0 16 16"><path d="M3 5h10M3 8h10M3 11h10"/><circle cx="6" cy="5" r="1.4" fill="currentColor" stroke="none"/><circle cx="11" cy="8" r="1.4" fill="currentColor" stroke="none"/><circle cx="7.5" cy="11" r="1.4" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.2"/><path d="M8 2v1.6M8 12.4V14M2 8h1.6M12.4 8H14M3.8 3.8l1.1 1.1M11.1 11.1l1.1 1.1M12.2 3.8l-1.1 1.1M4.9 11.1l-1.1 1.1"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4"/><path d="M10 10l3.5 3.5"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 16 16"><path d="M6 4l4 4-4 4"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 16 16"><path d="M6.5 3H13v6.5M13 3L7 9M3.5 6v6.5H10"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 16 16"><path d="M8 2l1.5 4L14 7.5 9.5 9 8 13 6.5 9 2 7.5 6.5 6z"/></symbol>
+  <symbol id="i-merge" viewBox="0 0 16 16"><circle cx="4.5" cy="4" r="1.6"/><circle cx="4.5" cy="12" r="1.6"/><circle cx="11.5" cy="4" r="1.6"/><path d="M4.5 5.6v4.8M9.9 4.6c0 2.4-1.4 3-3.4 3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-6.5"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 2.8l5.2 10.4H2.8zM8 6.4v3.1"/><circle cx="8" cy="11.6" r=".7" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-talk" viewBox="0 0 16 16"><path d="M3 3.5h10v6.5H6.5L3 13z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3.5v9M3.5 8h9"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.2"/><path d="M8 5v3.2l2 1.3"/></symbol>
+  <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 16 16"><path d="M8 2l5 2v5l-5 3-5-3V4z"/><path d="M6 8l1.5 1.5L10.5 6.5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 16 16"><path d="M5.5 3.8l6 4.2-6 4.2z"/></symbol>
+  <symbol id="i-hist" viewBox="0 0 16 16"><path d="M3 8a5 5 0 105-5M8 5.5V8l2 1.4M3 3.5V6h2.5"/></symbol>
+  <symbol id="i-file" viewBox="0 0 16 16"><path d="M4 2.5h5l3 3v8H4zM9 2.5v3h3"/></symbol>
+  <symbol id="i-more" viewBox="0 0 16 16"><circle cx="4" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 16 16"><path d="M13 8a5 5 0 01-8.5 3.5M3 8a5 5 0 018.5-3.5M11.5 2v3h-3M4.5 14v-3h3"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 16 16"><path d="M1.8 8S4.5 4 8 4s6.2 4 6.2 4-2.7 4-6.2 4S1.8 8 1.8 8z"/><circle cx="8" cy="8" r="1.8"/></symbol>
+</svg>
+
+<header class="mockbar">
+  <h1>日常工作台 · 大面板高保真线框</h1>
+  <span class="sub">1440×900 ×4 · 暗色为主 · 颜色全部取自宿主 --dsw-alias-*</span>
+  <span class="sp"></span>
+  <a href="#a">a 收件箱+AI抽屉</a><a href="#b">b 审查队列+批量</a><a href="#c">c 提示词与技能</a><a href="#d">d 设置</a>
+  <button id="themeBtn" type="button">切换明暗</button>
+</header>
+
+<div class="wrap">
+
+<!-- 画板 A：收件箱 + 选中详情 + AI 审查抽屉 -->
+<section class="board" id="a">
+  <div class="bcap"><b>a · 收件箱 · 选中详情 · AI 审查抽屉</b>
+    <span>宿主侧栏 56（收起态，含未读徽标）+ 导航 220 + 列表 380 + 详情 784（其中抽屉 404）</span></div>
+  <div class="canvas" data-active="inbox" data-foot1="轮询正常 · 每 5 分钟" data-foot2="下次同步 42s · 队列失败 0"
+       data-top="工作中台 · 已连接 gp.gitlab.example.com · 上次轮询 22:41:07 · 下次 42s">
+    <div class="list">
+      <div class="lhead">
+        <div class="r1"><h2>收件箱</h2><span class="lcount">12 未读 · 37 项</span>
+          <span class="acts">
+            <button class="iconbtn" title="全部已读"><svg class="ic s14"><use href="#i-check"/></svg></button>
+            <button class="iconbtn" title="刷新"><svg class="ic s14"><use href="#i-refresh"/></svg></button>
+            <button class="iconbtn" title="更多"><svg class="ic s14"><use href="#i-more"/></svg></button>
+          </span></div>
+        <div class="search"><svg class="ic s14"><use href="#i-search"/></svg>搜索标题、项目、作者<span class="kbd">/</span></div>
+      </div>
+      <div class="chips">
+        <button class="chip brand" data-on="true">仅需我审 5</button>
+        <button class="chip">全部来源</button>
+        <button class="chip">全部项目</button>
+        <button class="chip">按时间<svg class="ic s12"><use href="#i-down"/></svg></button>
+      </div>
+      <div class="lscroll">
+        <div class="grp">待我审 <span class="n">3</span><span class="ln"></span></div>
+        <div class="row" data-sel="true">
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">feat: 订单幂等校验（幂等键 + 去重表）</span><span class="unread"></span></div>
+            <div class="t2"><span class="proj">gp/order-service</span>·陈嘉行·!128<span class="time">8 分钟</span></div>
+            <div class="t3"><span class="pill pill-brand">待我审</span>
+              <span class="pill pill-err"><svg class="ic"><use href="#i-x"/></svg>CI 失败</span>
+              <span class="pill pill-warn">冲突</span><span class="pill pill-mute">审批 0/2</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">fix: 支付回调重试与去重时序</span><span class="unread"></span></div>
+            <div class="t2"><span class="proj">gp/payment-gateway</span>·周予安·!131<span class="time">23 分钟</span></div>
+            <div class="t3"><span class="pill pill-brand">待我审</span>
+              <span class="pill pill-ok"><svg class="ic"><use href="#i-check"/></svg>CI 通过</span>
+              <span class="pill pill-mute">审批 1/2</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-file"/></svg></span>
+              <span class="ttl">支付回调重复扣款（线上，P1）</span><span class="unread"></span></div>
+            <div class="t2"><span class="proj">gp/payment-gateway</span>·徐斯远·#512<span class="time">1 小时</span></div>
+            <div class="t3"><span class="pill pill-brand">待我审</span><span class="pill pill-line">Issue · 高优</span></div>
+          </div>
+        </div>
+        <div class="grp">我参与的 <span class="n">6</span><span class="ln"></span></div>
+        <div class="row">
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">refactor: 拆分 OrderApplicationService</span></div>
+            <div class="t2"><span class="proj">gp/order-service</span>·王砚清·!127<span class="time">2 小时</span></div>
+            <div class="t3"><span class="pill pill-ok">已批准 2/2</span><span class="pill pill-ok">CI 通过</span>
+              <span class="pill pill-mute">可合并</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">chore(ci): 收紧 integration 超时到 6m</span></div>
+            <div class="t2"><span class="proj">gp/infra-deploy</span>·林可·!119<span class="time">3 小时</span></div>
+            <div class="t3"><span class="pill pill-warn">流水线运行中</span><span class="pill pill-mute">审批 1/1</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-file"/></svg></span>
+              <span class="ttl">下单页在弱网下重复提交</span></div>
+            <div class="t2"><span class="proj">gp/web-console</span>·罗一鸣·#498<span class="time">昨天</span></div>
+            <div class="t3"><span class="pill pill-mute">已指派我</span><span class="pill pill-line">前端</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">feat: 优惠券叠加计算</span></div>
+            <div class="t2"><span class="proj">gp/promo-service</span>·陈嘉行·!122<span class="time">昨天</span></div>
+            <div class="t3"><span class="pill pill-warn">需修改</span><span class="pill pill-mute">2 条未解决</span></div>
+          </div>
+        </div>
+        <div class="grp">已稍后 <span class="n">3</span><span class="ln"></span></div>
+        <div class="row">
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">feat: 订单导出限流（草案）</span></div>
+            <div class="t2"><span class="proj">gp/order-service</span>·林可·!115<span class="time">3 天</span></div>
+            <div class="t3"><span class="pill pill-line">稍后至 周一 09:00</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail">
+      <div class="dtmain">
+        <div class="dthead">
+          <div class="crumb"><code>gp/order-service</code><svg class="ic s12"><use href="#i-chev"/></svg>
+            合并请求 <code>!128</code><svg class="ic s12"><use href="#i-chev"/></svg>已更新 8 分钟前</div>
+          <div class="dt1">
+            <h1>feat: 订单幂等校验（幂等键 + 去重表）</h1>
+            <div class="auacts">
+              <button class="btn btn-primary" id="openAi"><svg class="ic s14"><use href="#i-spark"/></svg>一键 AI 审查</button>
+              <button class="btn"><svg class="ic s14"><use href="#i-ext"/></svg>在 GitLab 打开</button>
+              <button class="iconbtn"><svg class="ic s14"><use href="#i-more"/></svg></button>
+            </div>
+          </div>
+          <div class="dmeta">
+            <span class="avatar">陈</span><span class="who">陈嘉行</span>·审阅者
+            <span class="avatar">我</span><span class="who">林可</span>
+            <span class="branch"><svg class="ic s12"><use href="#i-merge"/></svg>feat/idempotent-order</span>
+            <svg class="ic s12"><use href="#i-chev"/></svg><span class="branch">main</span>
+            <span class="pill pill-brand">待我审</span><span class="pill pill-err">CI 失败</span>
+            <span class="pill pill-warn">存在冲突</span><span class="pill pill-mute">12 文件 +486 −93</span>
+          </div>
+          <div class="tabs" data-for="dscroll">
+            <button class="tab" data-on="true" data-pane="ov">概览</button>
+            <button class="tab" data-pane="x">变更<span class="n">12</span></button>
+            <button class="tab" data-pane="x">讨论<span class="n">5</span></button>
+            <button class="tab" data-pane="x">流水线<span class="n">3</span></button>
+          </div>
+        </div>
+        <div class="dscroll" data-panes="ov x">
+          <div data-pane="ov" class="dscroll" style="padding:0;gap:12px">
+            <div class="blocker"><svg class="ic s14"><use href="#i-warn"/></svg>
+              <div><b>暂不可合并</b>：流水线 test:integration 失败，且需要 2 个批准（当前 0/2）。</div></div>
+            <div class="card">
+              <div class="ch"><svg class="ic s14"><use href="#i-play"/></svg><b>流水线 #4821</b>
+                <span class="pill pill-err">失败</span>
+                <span class="sp"><span class="kbd">main</span><button class="btn btn-sm btn-ghost">重试</button></span></div>
+              <div class="job"><span class="st no"><svg class="ic s12"><use href="#i-x"/></svg></span>
+                <span class="nm">test:integration</span><span class="pill pill-line">1 失败 · 2 跳过</span><span class="dur">1m52s</span></div>
+              <div class="job"><span class="st ok"><svg class="ic s12"><use href="#i-check"/></svg></span>
+                <span class="nm">test:unit</span><span class="dur">42s</span></div>
+              <div class="job"><span class="st ok"><svg class="ic s12"><use href="#i-check"/></svg></span>
+                <span class="nm">lint</span><span class="dur">18s</span></div>
+              <div class="job"><span class="st ok"><svg class="ic s12"><use href="#i-check"/></svg></span>
+                <span class="nm">build</span><span class="dur">1m03s</span></div>
+            </div>
+            <div class="card">
+              <div class="ch"><svg class="ic s14"><use href="#i-check"/></svg><b>审批</b><span class="pill pill-mute">0 / 2</span>
+                <span class="sp"><button class="btn btn-sm" id="approveBtn">批准</button></span></div>
+              <div class="cb"><div class="kv">
+                <b>审阅者</b><span>林可（我）· 待审 · 李梦琪 · 待审</span>
+                <b>代码所有者</b><span>@gp/order-core <span class="pill pill-mute">1 待审</span></span>
+                <b>规则</b><span>至少 2 个批准，且需代码所有者批准</span></div></div>
+            </div>
+            <div class="card">
+              <div class="ch"><b>描述</b><span class="sp"><button class="btn btn-sm btn-ghost">编辑</button></span></div>
+              <div class="cb">为解决「同一订单在重试、多渠道回调下被重复处理」，引入幂等键与去重表：
+                以 <span style="font-family:var(--fm);background:var(--p-inline);padding:1px 4px;border-radius:3px">idempotency_key</span>
+                做唯一约束，命中已处理请求时直接返回首次结果。<br>
+                关联 Issue #512（支付回调重复扣款）；设计文档见 wiki/order/idempotency。</div>
+            </div>
+          </div>
+          <div class="note" data-pane="x" hidden><svg class="ic s14"><use href="#i-eye"/></svg>
+            <div>本画板只演示「概览 + AI 抽屉」。变更对比（文件树 + 双栏 hunk + 讨论锚点）见 <b>画板 b</b>。</div></div>
+        </div>
+      </div>
+
+      <aside class="drawer" id="drawer">
+        <div class="dwhead">
+          <span class="ttl"><svg class="ic s14"><use href="#i-spark"/></svg>AI 审查 · 基线 v7</span>
+          <span class="sp"><span class="pill pill-mute">18s · 12 文件</span>
+            <button class="iconbtn" title="在会话中继续"><svg class="ic s14"><use href="#i-ext"/></svg></button>
+            <button class="iconbtn" title="关闭"><svg class="ic s14"><use href="#i-x"/></svg></button></span>
+        </div>
+        <div class="dwscroll">
+          <div class="verdict">
+            <div class="top"><span class="lvl">风险：中高</span><span class="pill pill-warn">建议要求修改</span>
+              <span class="conf">置信 0.82</span></div>
+            <div class="meter"><i class="m1"></i><i class="m2"></i><i class="m3"></i></div>
+            <p>幂等键缺少渠道维度，跨渠道同订单号会互相命中；去重表无唯一索引兜底，高并发下仍可能双写。核心链路变更，建议补迁移与并发测试后再合并。</p>
+          </div>
+          <div class="find">
+            <div class="fh"><span class="sev p1">P1</span><span class="ft">幂等键未包含渠道维度</span>
+              <span class="loc">IdempotencyKey.java:47</span></div>
+            <div class="fb"><p>键由 orderNo + userId 拼成；微信与支付宝回调携带同一 orderNo 时会命中同一键，第二笔支付被误判为「已处理」。</p>
+              <div class="ev">key = <em>orderNo + ":" + userId</em>;</div></div>
+            <div class="fa">证据 1 处 · 置信 0.90<span class="sp">
+              <button class="btn btn-sm">定位</button><button class="btn btn-sm btn-ghost">加入评论</button></span></div>
+          </div>
+          <div class="find">
+            <div class="fh"><span class="sev p2">P2</span><span class="ft">去重表缺唯一索引兜底</span>
+              <span class="loc">V2025_11__dedup.sql:12</span></div>
+            <div class="fb"><p>仅靠先查后写无法防并发；建议加 <b>UNIQUE(idempotency_key)</b> 并处理 23505 冲突。</p></div>
+            <div class="fa">证据 1 处 · 置信 0.85<span class="sp"><button class="btn btn-sm btn-ghost">加入评论</button></span></div>
+          </div>
+          <div class="find">
+            <div class="fh"><span class="sev p3">P3</span><span class="ft">重试次数与超时未联动</span>
+              <span class="loc">application.yaml:31</span></div>
+            <div class="fb"><p>3 次重试 × 8s 超时超过网关 20s 上限，最后一次重试可能被丢弃。</p></div>
+            <div class="fa">证据 1 处 · 置信 0.70</div>
+          </div>
+          <div class="note"><svg class="ic s14"><use href="#i-shield"/></svg>
+            <div>权限：只读审查。发现不会自动发布；<b>加入评论</b> 需在设置页开启「可写评论」（当前已开启）。</div></div>
+          <div class="note"><svg class="ic s14"><use href="#i-eye"/></svg>
+            <div>未覆盖 2 个文件（生成的 DTO、vendor 补丁）；可在提示词里调整忽略规则。</div></div>
+        </div>
+        <div class="ask">
+          <div class="askbox"><svg class="ic s14"><use href="#i-spark"/></svg>追问：如果渠道回调本身幂等，这个键还能怎么补？<span class="caret"></span></div>
+          <div class="dwfoot"><button class="btn btn-sm">要求修改</button><button class="btn btn-sm">批准</button>
+            <span class="sp"></span><button class="btn btn-sm btn-primary">加入评论 (3)</button></div>
+        </div>
+      </aside>
+
+      <div class="toast"><svg class="ic s14"><use href="#i-check"/></svg>已加入 1 条评论到 !128 · <span style="opacity:.7">撤销</span></div>
+    </div>
+
+    <div class="statusbar">
+      <span class="ks"><span class="kbd">j</span><span class="kbd">k</span>移动</span>
+      <span class="ks"><span class="kbd">Enter</span>打开</span>
+      <span class="ks"><span class="kbd">e</span>AI 审查</span>
+      <span class="ks"><span class="kbd">s</span>稍后</span>
+      <span class="ks"><span class="kbd">a</span>归档</span>
+      <span class="sp"></span><span>同步 22:41 · 12 未读 / 37 项 · 队列失败 0</span>
+    </div>
+  </div>
+</section>
+
+<!-- 画板 B：审查队列 + 批量操作 + 变更对比 -->
+<section class="board" id="b">
+  <div class="bcap"><b>b · 审查队列 · 批量操作 · 变更对比</b>
+    <span>列表 380 内为多选队列与批量条；详情 784 = 文件树 190 + 双栏 hunk 594</span></div>
+  <div class="canvas" data-active="queue" data-foot1="队列已就绪 · 0 进行中" data-foot2="AI 并发 2 / 2 · 预计 4m"
+       data-top="工作中台 / 审查队列 · 按风险排序 · 3 项已选">
+    <div class="list">
+      <div class="lhead">
+        <div class="r1"><h2>审查队列</h2><span class="lcount">5 待审 · 12 我提的</span>
+          <span class="acts">
+            <button class="iconbtn" title="按风险排序"><svg class="ic s14"><use href="#i-rules"/></svg></button>
+            <button class="iconbtn" title="刷新"><svg class="ic s14"><use href="#i-refresh"/></svg></button>
+            <button class="iconbtn" title="更多"><svg class="ic s14"><use href="#i-more"/></svg></button>
+          </span></div>
+        <div class="search"><svg class="ic s14"><use href="#i-search"/></svg>搜索队列<span class="kbd">/</span></div>
+      </div>
+      <div class="chips">
+        <button class="chip brand" data-on="true">待我审 5</button>
+        <button class="chip">风险 ↓</button>
+        <button class="chip">全部项目</button>
+        <button class="chip">AI 已审 4</button>
+      </div>
+      <div class="lscroll" id="queue">
+        <div class="grp">高风险 <span class="n">2</span><span class="ln"></span></div>
+        <div class="row" data-sel="true">
+          <div class="cb"><button class="cbx" data-on="true" aria-label="选择"><svg class="ic"><use href="#i-check"/></svg></button></div>
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">feat: 订单幂等校验（幂等键 + 去重表）</span></div>
+            <div class="t2"><span class="proj">gp/order-service</span>·!128·12 文件<span class="time">8 分钟</span></div>
+            <div class="t3"><span class="pill pill-err">P1 风险</span><span class="pill pill-warn">AI 已审</span>
+              <span class="pill pill-err">CI 失败</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="cb"><button class="cbx" data-on="true" aria-label="选择"><svg class="ic"><use href="#i-check"/></svg></button></div>
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">fix: 支付回调重试与去重时序</span></div>
+            <div class="t2"><span class="proj">gp/payment-gateway</span>·!131·6 文件<span class="time">23 分钟</span></div>
+            <div class="t3"><span class="pill pill-warn">P2 风险</span><span class="pill pill-warn">AI 已审</span></div>
+          </div>
+        </div>
+        <div class="grp">中风险 <span class="n">2</span><span class="ln"></span></div>
+        <div class="row">
+          <div class="cb"><button class="cbx" data-on="true" aria-label="选择"><svg class="ic"><use href="#i-check"/></svg></button></div>
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">refactor: 拆分 OrderApplicationService</span></div>
+            <div class="t2"><span class="proj">gp/order-service</span>·!127·18 文件<span class="time">2 小时</span></div>
+            <div class="t3"><span class="pill pill-warn">P2 风险</span><span class="pill pill-ok">CI 通过</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="cb"><button class="cbx" aria-label="选择"><svg class="ic"><use href="#i-check"/></svg></button></div>
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">feat: 优惠券叠加计算</span></div>
+            <div class="t2"><span class="proj">gp/promo-service</span>·!122·9 文件<span class="time">昨天</span></div>
+            <div class="t3"><span class="pill pill-warn">P2 风险</span><span class="pill pill-err">2 条未解决</span></div>
+          </div>
+        </div>
+        <div class="grp">低风险 <span class="n">1</span><span class="ln"></span></div>
+        <div class="row">
+          <div class="cb"><button class="cbx" aria-label="选择"><svg class="ic"><use href="#i-check"/></svg></button></div>
+          <div class="body">
+            <div class="t1"><span class="src"><svg class="ic s14"><use href="#i-merge"/></svg></span>
+              <span class="ttl">chore(ci): 收紧 integration 超时到 6m</span></div>
+            <div class="t2"><span class="proj">gp/infra-deploy</span>·!119·2 文件<span class="time">3 小时</span></div>
+            <div class="t3"><span class="pill pill-mute">P3 风险</span><span class="pill pill-ok">CI 通过</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="batch"><b>已选 3 项</b><span class="sp"></span>
+        <button class="btn btn-sm btn-primary"><svg class="ic s14"><use href="#i-spark"/></svg>批量 AI 审查</button>
+        <button class="btn btn-sm btn-ghost">稍后</button>
+        <button class="btn btn-sm btn-ghost">归档</button>
+        <button class="iconbtn" title="清除"><svg class="ic s14"><use href="#i-x"/></svg></button>
+      </div>
+    </div>
+
+    <div class="diffwrap">
+      <div class="ftree">
+        <div class="fh">
+          <div class="r"><b>变更文件 12</b><span class="pill pill-line">+486 −93</span></div>
+          <div class="r"><span class="pill pill-err">P1 1</span><span class="pill pill-warn">P2 1</span>
+            <span class="pill pill-mute">未覆盖 2</span></div>
+        </div>
+        <div class="fl">
+          <div class="fdir">src/main/java/gp/order/</div>
+          <div class="frow" data-on="true"><span class="st m">M</span><span class="nm">IdempotencyKey.java</span>
+            <span class="stat"><i>+38</i> <em>−4</em></span></div>
+          <div class="frow"><span class="st m">M</span><span class="nm">OrderService.java</span>
+            <span class="stat"><i>+64</i> <em>−12</em></span></div>
+          <div class="frow"><span class="st a">A</span><span class="nm">DedupRepository.java</span>
+            <span class="stat"><i>+92</i></span></div>
+          <div class="frow"><span class="st m">M</span><span class="nm">OrderController.java</span>
+            <span class="stat"><i>+18</i> <em>−6</em></span></div>
+          <div class="frow"><span class="st d">D</span><span class="nm">LegacyRetryHandler.java</span>
+            <span class="stat"><em>−41</em></span></div>
+          <div class="fdir">db/migration/</div>
+          <div class="frow"><span class="st a">A</span><span class="nm">V2025_11__dedup.sql</span>
+            <span class="stat"><i>+21</i></span></div>
+          <div class="fdir">src/test/java/gp/order/</div>
+          <div class="frow"><span class="st a">A</span><span class="nm">IdempotencyIT.java</span>
+            <span class="stat"><i>+146</i></span></div>
+          <div class="frow"><span class="st m">M</span><span class="nm">OrderServiceTest.java</span>
+            <span class="stat"><i>+34</i> <em>−8</em></span></div>
+          <div class="fdir">config/ · docs/</div>
+          <div class="frow"><span class="st m">M</span><span class="nm">application.yaml</span>
+            <span class="stat"><i>+9</i> <em>−3</em></span></div>
+          <div class="frow"><span class="st m">M</span><span class="nm">idempotency.md</span>
+            <span class="stat"><i>+64</i> <em>−15</em></span></div>
+        </div>
+      </div>
+      <div class="diff">
+        <div class="diffhead">
+          <span class="pill pill-mute">M</span>
+          <span class="fname">src/main/java/gp/order/IdempotencyKey.java</span>
+          <span class="pill pill-err">P1 · 47</span>
+          <span class="sp"><button class="btn btn-sm btn-ghost">双栏</button>
+            <button class="btn btn-sm btn-ghost">统一</button>
+            <button class="btn btn-sm btn-ghost"><svg class="ic s14"><use href="#i-eye"/></svg>已阅</button></span>
+        </div>
+        <div class="dscroll2">
+          <div class="hunkh">@@ -41,9 +41,14 @@ class IdempotencyKey {</div>
+          <div class="hunk">
+            <div class="ln">41</div><div class="x">    <span class="tok">public static</span> String <span class="tok">of</span>(Order o) {</div>
+            <div class="ln">41</div><div class="x">    <span class="tok">public static</span> String <span class="tok">of</span>(Order o) {</div>
+            <div class="ln">42</div><div class="x">        <span class="tok">return</span> o.getOrderNo();</div>
+            <div class="ln">42</div><div class="x">        <span class="tok">return</span> build(o.getOrderNo(), o.getUserId());</div>
+            <div class="ln">43</div><div class="x">    }</div>
+            <div class="ln a">43</div><div class="a"><span class="mark">+</span>    }</div>
+            <div class="ln a">44</div><div class="a"><span class="mark">+</span>    <span class="cmt">// 便于日志排查，保留可读键</span></div>
+            <div class="ln a">45</div><div class="a"><span class="mark">+</span>    <span class="tok">private static</span> String build(String orderNo, String userId) {</div>
+            <div class="ln a">46</div><div class="a"><span class="mark">+</span>        <span class="tok">return</span> orderNo + <span class="str">":"</span> + userId;</div>
+            <div class="ln a">47</div><div class="a"><span class="mark">+</span>    }</div>
+            <div class="ln">47</div><div class="x">}</div>
+            <div class="ln">48</div><div class="x"></div>
+          </div>
+          <div class="hunkh">@@ -52,7 +57,9 @@ class OrderService {</div>
+          <div class="hunk">
+            <div class="ln">52</div><div class="x">    <span class="tok">public</span> OrderResult <span class="tok">handle</span>(Callback cb) {</div>
+            <div class="ln">52</div><div class="x">    <span class="tok">public</span> OrderResult <span class="tok">handle</span>(Callback cb) {</div>
+            <div class="ln d">53</div><div class="d"><span class="mark">-</span>        <span class="tok">if</span> (repo.exists(cb.getOrderNo())) <span class="tok">return</span> repo.get(cb.getOrderNo());</div>
+            <div class="ln a">53</div><div class="a"><span class="mark">+</span>        var key = IdempotencyKey.of(cb);</div>
+            <div class="ln a">54</div><div class="a"><span class="mark">+</span>        <span class="tok">return</span> repo.find(key).orElseGet(() -&gt; process(cb, key));</div>
+            <div class="ln">55</div><div class="x">    }</div>
+            <div class="ln">55</div><div class="x">    }</div>
+          </div>
+          <div class="thread">
+            <div class="th"><svg class="ic s12"><use href="#i-spark"/></svg>AI · P1 发现<span style="margin-left:auto">IdempotencyKey.java:47</span></div>
+            <div class="body">
+              <p>键缺少渠道维度：微信与支付宝回流携带同一 orderNo，第二笔会被判为重复。建议改为 orderNo:userId:channel。</p>
+              <div class="ev">key = <em>orderNo + ":" + userId</em>;</div>
+            </div>
+            <div class="acts"><button class="btn btn-sm btn-primary">加入评论</button>
+              <button class="btn btn-sm btn-ghost">忽略本条</button>
+              <button class="btn btn-sm btn-ghost">在会话中追问</button></div>
+          </div>
+          <div class="hunkh">@@ -70,4 +78,8 @@ (新增测试)</div>
+          <div class="hunk">
+            <div class="ln a">78</div><div class="a"><span class="mark">+</span><span class="cmt">// 并发 200 次，仅 1 次真正处理</span></div>
+            <div class="ln a">79</div><div class="a"><span class="mark">+</span><span class="tok">@Test</span> <span class="tok">void</span> concurrent_duplicate_callback() {</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="statusbar">
+      <span class="ks"><span class="kbd">Space</span>选择</span>
+      <span class="ks"><span class="kbd">j</span><span class="kbd">k</span>移动</span>
+      <span class="ks"><span class="kbd">e</span>AI 审查</span>
+      <span class="ks"><span class="kbd">Shift</span>+<span class="kbd">e</span>批量审查</span>
+      <span class="sp"></span><span>批量写操作需设置页开启「可写评论」</span>
+    </div>
+  </div>
+</section>
+
+<!-- 画板 C：提示词与技能 -->
+<section class="board" id="c">
+  <div class="bcap"><b>c · 提示词与技能管理</b>
+    <span>列表 380（提示词 16 / 技能 8），编辑器 784：变量高亮 + 试跑 + 版本历史 + 适用范围</span></div>
+  <div class="canvas" data-active="prompt" data-foot1="6 个技能来自 DSH skills" data-foot2="最近修改：基线 v7 · 今天 10:24"
+       data-top="工作中台 / 提示词与技能 · 24 项 · 3 个与 DSH skills 同源">
+    <div class="list">
+      <div class="lhead">
+        <div class="r1"><h2>提示词与技能</h2><span class="lcount">24 项 · 3 草稿</span>
+          <span class="acts">
+            <button class="iconbtn" title="新建"><svg class="ic s14"><use href="#i-plus"/></svg></button>
+            <button class="iconbtn" title="从技能导入"><svg class="ic s14"><use href="#i-refresh"/></svg></button>
+          </span></div>
+        <div class="search"><svg class="ic s14"><use href="#i-search"/></svg>搜索名称、标签<span class="kbd">/</span></div>
+      </div>
+      <div class="chips">
+        <button class="chip" data-on="true">全部 24</button>
+        <button class="chip">提示词 16</button>
+        <button class="chip">技能 8</button>
+        <button class="chip">启用中 18</button>
+      </div>
+      <div class="lscroll">
+        <div class="grp">审查类 <span class="n">4</span><span class="ln"></span></div>
+        <div class="prow" data-sel="true">
+          <div class="ico"><svg class="ic s14"><use href="#i-prompt"/></svg></div>
+          <div class="b"><div class="t">代码审查 · 默认基线</div><div class="m"><code>v7</code>·启用·全部项目</div></div>
+        </div>
+        <div class="prow">
+          <div class="ico"><svg class="ic s14"><use href="#i-prompt"/></svg></div>
+          <div class="b"><div class="t">前端审查 · 可访问性</div><div class="m"><code>v3</code>·gp/web-console</div></div>
+        </div>
+        <div class="prow">
+          <div class="ico"><svg class="ic s14"><use href="#i-shield"/></svg></div>
+          <div class="b"><div class="t">安全审查 · 凭证泄漏</div>
+            <div class="m"><code>v2</code>·技能<span class="pill pill-done" style="height:14px;line-height:14px;font-size:9px">DSH</span></div></div>
+        </div>
+        <div class="prow">
+          <div class="ico"><svg class="ic s14"><use href="#i-rules"/></svg></div>
+          <div class="b"><div class="t">迁移脚本审查</div><div class="m"><code>v1</code>·草稿·未启用</div></div>
+        </div>
+        <div class="grp">技能（与 DSH skills 联动） <span class="n">3</span><span class="ln"></span></div>
+        <div class="prow">
+          <div class="ico"><svg class="ic s14"><use href="#i-play"/></svg></div>
+          <div class="b"><div class="t">gitlab-mr-triage</div>
+            <div class="m">技能·只读引用·来自 <code>~/.dsh/skills</code></div></div>
+        </div>
+        <div class="prow">
+          <div class="ico"><svg class="ic s14"><use href="#i-play"/></svg></div>
+          <div class="b"><div class="t">release-notes-draft</div><div class="m">技能·只读引用·gp 组共享</div></div>
+        </div>
+        <div class="prow">
+          <div class="ico"><svg class="ic s14"><use href="#i-prompt"/></svg></div>
+          <div class="b"><div class="t">Issue 摘要 · 中文</div><div class="m"><code>v4</code>·启用·全部项目</div></div>
+        </div>
+        <div class="grp">已归档 <span class="n">2</span><span class="ln"></span></div>
+        <div class="prow">
+          <div class="ico"><svg class="ic s14"><use href="#i-prompt"/></svg></div>
+          <div class="b"><div class="t">旧版审查（2024 规则）</div><div class="m"><code>v12</code>·已归档</div></div>
+        </div>
+      </div>
+      <div class="batch"><b>24 项</b><span class="sp"></span>
+        <span class="kbd">Enter</span>打开<span class="kbd">Space</span>启用/停用</div>
+    </div>
+
+    <div class="editor">
+      <div class="edhead">
+        <div class="r1"><h1>代码审查 · 默认基线</h1>
+          <span class="pill pill-mute">提示词</span><span class="pill pill-ok">启用中</span>
+          <span class="sp"><span style="color:var(--p-fg3);font-size:11px">启用</span>
+            <button class="switch" data-on="true" aria-label="启用"></button>
+            <button class="btn"><svg class="ic s14"><use href="#i-play"/></svg>试跑</button>
+            <button class="btn btn-primary">保存 v8</button></span></div>
+        <div class="edsub"><code style="font-family:var(--fm)">v7</code>·更新于今天 10:24 · 林可
+          ·适用范围：全部项目（3 个覆盖层）·被引用 128 次 · 平均耗时 18s<span class="kbd">⌘S</span>保存</div>
+        <div class="tabs" data-for="edpane">
+          <button class="tab" data-on="true" data-pane="ed">编辑</button>
+          <button class="tab" data-pane="pv">预览</button>
+          <button class="tab" data-pane="hi">版本历史<span class="n">7</span></button>
+          <button class="tab" data-pane="sc">适用范围<span class="n">3</span></button>
+        </div>
+      </div>
+      <div class="varbar">变量<span class="vchip">&#123;&#123;mr.title&#125;&#125;</span>
+        <span class="vchip">&#123;&#123;mr.description&#125;&#125;</span><span class="vchip">&#123;&#123;diff&#125;&#125;</span>
+        <span class="vchip">&#123;&#123;project.path&#125;&#125;</span><span class="vchip">&#123;&#123;files.changed&#125;&#125;</span>
+        <span style="margin-left:auto">4 / 5 已使用 · 校验通过</span></div>
+      <div class="edpane" data-pane="ed">
+        <div class="pane">
+          <div class="n">1</div><div class="l"><span class="cmt"># 角色</span></div>
+          <div class="n">2</div><div class="l">你是 <span class="str">gp/order-service</span> 的资深评审者，只输出中文结论。</div>
+          <div class="n">3</div><div class="l"></div>
+          <div class="n">4</div><div class="l"><span class="cmt"># 输入</span></div>
+          <div class="n">5</div><div class="l">项目：<span class="varhl">&#123;&#123;project.path&#125;&#125;</span>　变更文件：<span class="varhl">&#123;&#123;files.changed&#125;&#125;</span></div>
+          <div class="n">6</div><div class="l">标题：<span class="varhl">&#123;&#123;mr.title&#125;&#125;</span></div>
+          <div class="n">7</div><div class="l">描述：<span class="varhl">&#123;&#123;mr.description&#125;&#125;</span></div>
+          <div class="n">8</div><div class="l"></div>
+          <div class="n">9</div><div class="l"><span class="cmt"># 关注点（按严重度 P1→P3）</span></div>
+          <div class="n">10</div><div class="l">1. 幂等、并发与事务边界；2. 迁移脚本可回滚性；</div>
+          <div class="n">11</div><div class="l">3. 空值与异常分支；4. 测试是否覆盖新增分支。</div>
+          <div class="n">12</div><div class="l"></div>
+          <div class="n">13</div><div class="l"><span class="cmt"># 输出格式</span></div>
+          <div class="n">14</div><div class="l">先给结论（风险分级 + 是否可合并），再逐条 findings：</div>
+          <div class="n">15</div><div class="l">严重度 / 文件:行 / 证据片段 / 一句话修复建议。</div>
+          <div class="n">16</div><div class="l"></div>
+          <div class="n">17</div><div class="l"><span class="cmt"># diff</span></div>
+          <div class="n">18</div><div class="l"><span class="varhl">&#123;&#123;diff&#125;&#125;</span></div>
+        </div>
+      </div>
+      <div class="edpane" data-pane="pv" hidden>
+        <div class="vlist">
+          <div class="note"><svg class="ic s14"><use href="#i-play"/></svg>
+            <div>用 !128 试跑：18s · 12.4k / 200k tokens · 3 findings（P1 1 / P2 1 / P3 1）。以下为渲染后预览。</div></div>
+          <div class="vitem"><span class="pill pill-warn">风险：中高</span>
+            <code>建议要求修改</code><span class="sp"><span class="pill pill-mute">置信 0.82</span></span></div>
+          <div class="vitem"><span class="sev p1">P1</span>幂等键未包含渠道维度
+            <span class="sp"><code>IdempotencyKey.java:47</code></span></div>
+          <div class="vitem"><span class="sev p2">P2</span>去重表缺唯一索引兜底
+            <span class="sp"><code>V2025_11__dedup.sql:12</code></span></div>
+          <div class="vitem"><span class="sev p3">P3</span>重试次数与超时未联动
+            <span class="sp"><code>application.yaml:31</code></span></div>
+        </div>
+      </div>
+      <div class="edpane" data-pane="hi" hidden>
+        <div class="vlist">
+          <div class="vitem"><code>v7</code>收紧「证据」要求：每条 finding 必须带 file:line
+            <span class="sp"><span class="pill pill-ok">当前</span>今天 10:24 · 林可</span></div>
+          <div class="vitem"><code>v6</code>增加迁移脚本可回滚性检查
+            <span class="sp"><span class="pill pill-ok">已批准</span>10-31 · 陈嘉行</span></div>
+          <div class="vitem"><code>v5</code>把风险分级从三档改为 P1–P3
+            <span class="sp">10-24 · 林可</span></div>
+          <div class="vitem"><code>v4</code>首次接入 gp/order-service 覆盖层
+            <span class="sp">10-12 · 林可</span></div>
+        </div>
+      </div>
+      <div class="edpane" data-pane="sc" hidden>
+        <div class="vlist">
+          <div class="vitem"><svg class="ic s14"><use href="#i-proj"/></svg>gp/order-service
+            <span class="sp"><span class="pill pill-brand">覆盖层 v2</span></span></div>
+          <div class="vitem"><svg class="ic s14"><use href="#i-proj"/></svg>gp/payment-gateway
+            <span class="sp"><span class="pill pill-mute">继承基线</span></span></div>
+          <div class="vitem"><svg class="ic s14"><use href="#i-proj"/></svg>gp/web-console
+            <span class="sp"><span class="pill pill-mute">继承基线</span></span></div>
+          <div class="note"><svg class="ic s14"><use href="#i-shield"/></svg>
+            <div>适用范围按项目/组绑定；未列出的项目回落到「全部项目」基线。</div></div>
+        </div>
+      </div>
+      <div class="edfoot">
+        <span class="pill pill-ok"><svg class="ic"><use href="#i-check"/></svg>语法校验通过</span>
+        <span>上次试跑：!128 · 3 findings · 12.4k tokens</span><span class="sp"></span>
+        <button class="btn btn-sm btn-ghost">格式化</button><button class="btn btn-sm btn-ghost">另存为副本</button>
+      </div>
+    </div>
+
+    <div class="statusbar">
+      <span class="ks"><span class="kbd">⌘S</span>保存</span>
+      <span class="ks"><span class="kbd">⌘Enter</span>试跑</span>
+      <span class="sp"></span><span>技能为只读引用；插件侧覆盖层不改写 DSH skill 文件</span>
+    </div>
+  </div>
+</section>
+
+<!-- 画板 D：设置 -->
+<section class="board" id="d">
+  <div class="bcap"><b>d · 设置</b>
+    <span>与宿主入口型页面同构：page inset clamp(24,4vw,48) · 内容 960 · 标题 20/28 + 说明 13/20</span></div>
+  <div class="canvas" data-active="set" data-foot1="连接正常 · @lin.ke" data-foot2="权限：可写评论（需 api 作用域）"
+       data-top="工作中台 / 设置 · 2 项未保存">
+    <div class="settings">
+      <div class="spage">
+        <div class="ph">
+          <div><h1>设置</h1>
+            <p class="pi">连接、轮询、范围、通知与 AI 策略。保存后立即生效，无需重启面板。</p></div>
+          <div class="sp"><button class="btn btn-ghost">恢复默认</button>
+            <button class="btn btn-primary">保存 2 项</button></div>
+        </div>
+
+        <div class="sgroup">
+          <h3>GitLab 连接</h3>
+          <p class="desc">令牌只存本机 Harness profile，不写日志；面板用它把 MR / Issue 拉取为收件箱条目。</p>
+          <div class="scard">
+            <div class="srow"><div class="lab"><b>实例地址</b><span>自建实例填完整 origin，含子路径</span></div>
+              <div class="input"><svg class="ic s14"><use href="#i-ext"/></svg>https://gp.gitlab.example.com</div></div>
+            <div class="srow"><div class="lab"><b>个人访问令牌（PAT）</b><span>需 read_api；写评论/批准还需 api</span></div>
+              <div class="input">••••••••••••••••&nbsp;<span class="pill pill-ok">已保存</span></div>
+              <button class="btn btn-sm">替换</button></div>
+            <div class="srow"><div class="lab"><b>连接测试</b><span>最近成功 22:41:07 · @lin.ke · 210ms</span></div>
+              <span class="pill pill-ok"><svg class="ic"><use href="#i-check"/></svg>连接正常</span>
+              <button class="btn btn-sm">重新测试</button></div>
+            <div class="srow"><div class="lab"><b>作用域检查</b><span>缺 api 时自动降级只读，批量操作置灰</span></div>
+              <span class="pill pill-ok">read_api ✓</span><span class="pill pill-ok">api ✓</span>
+              <span class="pill pill-line">sudo ✕ 不需要</span></div>
+          </div>
+        </div>
+
+        <div class="sgroup">
+          <h3>轮询与静默</h3>
+          <div class="scard">
+            <div class="srow"><div class="lab"><b>轮询间隔</b><span>最小 1 分钟；命中限速自动退避</span></div>
+              <div class="select">每 5 分钟<svg class="ic s14"><use href="#i-down"/></svg></div></div>
+            <div class="srow"><div class="lab"><b>活跃时段</b><span>仅此时段内展示桌面通知</span></div>
+              <div class="input plain">09:00 – 20:00</div></div>
+            <div class="srow"><div class="lab"><b>静默时段</b><span>静默期仍轮询，只是不提醒；未读照常累积</span></div>
+              <div class="input plain">20:00 – 09:00 · 周末</div>
+              <button class="switch" data-on="true" aria-label="启用静默"></button></div>
+            <div class="srow"><div class="lab"><b>下次同步</b><span>42 秒后 · 上次 22:41:07 · 队列失败 0</span></div>
+              <button class="btn btn-sm"><svg class="ic s14"><use href="#i-refresh"/></svg>立即同步</button></div>
+          </div>
+        </div>
+
+        <div class="sgroup">
+          <h3>项目与组范围</h3>
+          <div class="scard">
+            <div class="srow"><div class="lab"><b>订阅范围</b><span>组包含其子项目；重启后仍生效</span></div>
+              <span class="pill pill-mute">gp/order-service</span>
+              <span class="pill pill-mute">gp/payment-gateway</span>
+              <span class="pill pill-mute">gp/web-console</span>
+              <span class="pill pill-line">+ 添加</span></div>
+            <div class="srow"><div class="lab"><b>排除已归档项目</b><span>避免旧仓库噪音</span></div>
+              <button class="switch" data-on="true" aria-label="排除归档"></button></div>
+            <div class="srow"><div class="lab"><b>仅包含指派给我</b><span>关闭后可看到组内全部待审 MR</span></div>
+              <button class="switch" aria-label="仅指派给我"></button></div>
+          </div>
+        </div>
+
+        <div class="sgroup">
+          <h3>通知与未读</h3>
+          <div class="scard">
+            <div class="srow"><div class="lab"><b>桌面通知</b><span>新 MR 指派、CI 由红转绿、有人 @ 我</span></div>
+              <button class="switch" data-on="true" aria-label="桌面通知"></button></div>
+            <div class="srow"><div class="lab"><b>面板图标未读徽标</b><span>显示在侧栏图标右上角，最多 99+</span></div>
+              <button class="switch" data-on="true" aria-label="未读徽标"></button></div>
+            <div class="srow"><div class="lab"><b>仅「需我审」触发提醒</b><span>我提交的 MR 变更改为静默累积</span></div>
+              <button class="switch" data-on="true" aria-label="仅需我审"></button></div>
+          </div>
+        </div>
+
+        <div class="sgroup">
+          <h3>AI 审查</h3>
+          <div class="scard">
+            <div class="srow"><div class="lab"><b>模型</b><span>审查模型可与主会话不同</span></div>
+              <div class="select">deepseek-v4（默认）<svg class="ic s14"><use href="#i-down"/></svg></div></div>
+            <div class="srow"><div class="lab"><b>并发审查数</b><span>当前 2 / 上限 4；超限排队</span></div>
+              <div class="select">2<svg class="ic s14"><use href="#i-down"/></svg></div></div>
+            <div class="srow"><div class="lab"><b>单次上限</b><span>超出后按文件分片，分片结果合并</span></div>
+              <div class="input plain">4 000 行 / 12 文件</div></div>
+            <div class="srow"><div class="lab"><b>默认提示词</b><span>可在提示词页按项目覆盖</span></div>
+              <div class="select">代码审查 · 基线 v7<svg class="ic s14"><use href="#i-down"/></svg></div></div>
+          </div>
+        </div>
+
+        <div class="sgroup">
+          <h3>权限边界</h3>
+          <p class="desc">默认只读。写操作逐条确认且可撤销；面板永不自动合并。</p>
+          <div class="scard">
+            <div class="srow"><div class="lab"><b>只读</b><span>只拉取与审查，不向 GitLab 写入任何内容</span></div>
+              <span class="radio"><span class="rd"></span>可选</span></div>
+            <div class="srow"><div class="lab"><b>可写评论</b><span>允许把 AI findings 作为评论发布；批准需二次确认</span></div>
+              <span class="radio"><span class="rd" data-on="true"></span>当前</span></div>
+            <div class="srow"><div class="lab"><b>可写（批准 / 合并）</b><span>合并仍在面板内点击完成</span></div>
+              <span class="radio"><span class="rd"></span>未开启</span></div>
+            <div class="srow" style="display:block">
+              <div class="note warn"><svg class="ic s14"><use href="#i-warn"/></svg>
+                <div>开启「可写」后，AI 建议以 <b>草稿评论</b> 排队，需在详情页逐条确认；不会无人值守地修改远程仓库。</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="statusbar">
+      <span class="ks"><span class="kbd">⌘S</span>保存</span>
+      <span class="ks"><span class="kbd">Esc</span>放弃</span>
+      <span class="sp"></span><span>令牌仅存本机 · 写操作二次确认 · 合并永不自动执行</span>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+/* 外壳（顶带 + 宿主侧栏 + 一级导航）由 4 块画板共享，等价于 React 的 <WorkbenchShell active>；
+   每块画板的列表 / 详情 / 抽屉均为静态 HTML，可直接对照实现。 */
+(function(){
+  var NAV=[
+    ['inbox','收件箱','i-inbox',12],['queue','审查队列','i-queue',5],['work','我的工作','i-work',8],
+    ['proj','项目','i-proj',6],['prompt','提示词与技能','i-prompt',24],['rules','规则与自动化','i-rules',7],
+    ['set','设置','i-gear',0]
+  ];
+  function icon(id,cls){ return '<svg class="ic '+(cls||'')+'"><use href="#'+id+'"/></svg>'; }
+  function shell(active,top,f1,f2){
+    var items=NAV.map(function(n){
+      var on=n[0]===active?' data-on="true"':'';
+      var count=n[3]?'<span class="n'+(n[0]==='inbox'?' hot':'')+'">'+n[3]+'</span>':'';
+      return '<button class="item"'+on+'>'+icon(n[2])+n[1]+count+'</button>';
+    }).join('');
+    return '<div class="topbar"><span class="dots"><i></i><i></i><i></i></span>'
+      +'<span class="ttl">DeepSeek Harness</span><span class="sep"></span><span>'+top+'</span>'
+      +'<span class="sp"></span><span>⌘K 命令</span></div>'
+      +'<aside class="rail"><button class="ri" title="会话">'+icon('i-talk')+'</button>'
+      +'<button class="ri" title="工作区">'+icon('i-proj')+'</button>'
+      +'<button class="ri" data-on="true" title="工作中台（未读 12）">'+icon('i-inbox')
+      +'<span class="badge">12</span></button>'
+      +'<button class="ri" title="定时任务">'+icon('i-clock')+'</button><div class="grow"></div>'
+      +'<button class="ri" title="插件">'+icon('i-rules')+'</button>'
+      +'<button class="ri" title="设置">'+icon('i-gear')+'</button></aside>'
+      +'<nav class="nav"><div class="brand"><span class="mk">中</span>工作中台</div>'
+      +'<div class="grp">处理</div>'+items.split('<button').slice(1,4).map(function(s){return '<button'+s;}).join('')
+      +'<div class="grp">配置</div>'+items.split('<button').slice(4).map(function(s){return '<button'+s;}).join('')
+      +'<div class="foot"><div class="row"><span class="pulse"></span>'+f1+'</div>'
+      +'<div class="row">'+f2+'</div>'
+      +'<div class="row">快捷键 <span class="kbd">?</span> 查看全部</div></div></nav>';
+  }
+  document.querySelectorAll('.canvas').forEach(function(c){
+    c.insertAdjacentHTML('afterbegin', shell(c.dataset.active, c.dataset.top, c.dataset.foot1, c.dataset.foot2));
+  });
+
+  var root=document.documentElement;
+  document.getElementById('themeBtn').addEventListener('click',function(){
+    root.dataset.theme = root.dataset.theme==='dark' ? 'light' : 'dark';
+  });
+  // 页签切换：tabs[data-for] 指向同容器内的 pane 集合
+  document.querySelectorAll('.tabs').forEach(function(bar){
+    bar.addEventListener('click',function(e){
+      var btn=e.target.closest('.tab'); if(!btn) return;
+      bar.querySelectorAll('.tab').forEach(function(t){ t.dataset.on = t===btn ? 'true':'false'; });
+      var host=bar.closest('.dtmain,.editor'), scope=btn.dataset.pane;
+      if(!host||!scope) return;
+      host.querySelectorAll('[data-pane]').forEach(function(p){
+        if(p.classList.contains('tab')) return;
+        p.hidden = p.dataset.pane!==scope;
+      });
+    });
+  });
+  // 队列复选与批量计数
+  var queue=document.getElementById('queue');
+  if(queue){ queue.addEventListener('click',function(e){
+    var cb=e.target.closest('.cbx'); if(!cb) return;
+    cb.dataset.on = cb.dataset.on==='true' ? 'false':'true';
+    var n=queue.querySelectorAll('.cbx[data-on=true]').length;
+    document.querySelector('.batch b').textContent='已选 '+n+' 项';
+  });}
+  // 导航 / 列表行选中态
+  document.querySelectorAll('.nav').forEach(function(nav){
+    nav.addEventListener('click',function(e){
+      var it=e.target.closest('.item'); if(!it) return;
+      nav.querySelectorAll('.item').forEach(function(i){ i.dataset.on = i===it ? 'true':'false'; });
+    });
+  });
+  document.querySelectorAll('.lscroll').forEach(function(sc){
+    sc.addEventListener('click',function(e){
+      var r=e.target.closest('.row,.prow'); if(!r) return;
+      sc.querySelectorAll('.row,.prow').forEach(function(x){ x.dataset.sel = x===r ? 'true':'false'; });
+    });
+  });
+  // AI 抽屉开关
+  var openAi=document.getElementById('openAi'), drawer=document.getElementById('drawer');
+  if(openAi&&drawer){ openAi.addEventListener('click',function(){
+    drawer.hidden = !drawer.hidden;
+  });}
+})();
+</script>
+</body>
+</html>
