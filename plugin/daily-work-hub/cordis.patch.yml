@@ -1,9 +1,15 @@
 # daily-work-hub bundle patch.
 # One Host row. `config` seeds first-run values; the user's own patch layer
 # (profile cordis.patch.yml) overrides them and survives upgrades.
+#
+# The GitLab instance, token reference, scopes, polling cadence and AI model are
+# edited from the panel (Settings) and persisted in the plugin's own storage, so
+# they are deliberately NOT duplicated here: a value that lives in two places
+# drifts. This file only seeds the bootstrap identity.
 - insert:
     - id: daily-work-hub
       name: 'daily-work-hub'
       config:
         instance: default
         pollIntervalSec: 60
+        reviewConcurrency: 3

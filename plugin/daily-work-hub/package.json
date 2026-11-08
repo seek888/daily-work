@@ -1,13 +1,14 @@
 {
   "name": "daily-work-hub",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Daily work hub for software developers: GitLab MR/Issue inbox, review queue, one-click AI review — plus prompts and skills. Full-page panel inside DeepSeek Harness.",
+  "description": "Daily work hub for software developers: GitLab MR/Issue inbox, review queue, one-click AI review, prompt templates and repeatable jobs. Full-page panel inside DeepSeek Harness.",
   "icon": "./icon.svg",
   "exports": {
     ".": "./index.js",
     "./index": "./index.js",
+    "./lib/*": "./lib/*",
     "./client": "./client/client.js",
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./locale/*.json": "./locale/*.json",
@@ -16,12 +17,21 @@
   },
   "files": [
     "index.js",
+    "lib",
     "client/client.js",
     "cordis.patch.yml",
     "locale/zh.json",
     "locale/en.json",
-    "icon.svg"
+    "icon.svg",
+    "README.md"
   ],
+  "scripts": {
+    "test": "node --test test/",
+    "check": "node --check index.js && node --check client/client.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
